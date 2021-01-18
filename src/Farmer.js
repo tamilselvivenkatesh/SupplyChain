@@ -86,7 +86,7 @@ export default class Farmer extends React.Component {
   handleCropClick(event) {
     event.preventDefault();
     window.web3.eth.getCoinbase((err, account) => {
-    this.setState({account}) //we did
+    this.setState({account}) 
     this.supply.methods.addCrop(
         this.state.cropID,
         this.state.cropName,
@@ -105,7 +105,7 @@ export default class Farmer extends React.Component {
               <h2 className="text-center">Farmer Details</h2>
               <div className="form-group">
                 <input
-                  type="text"
+                  type="number" pattern ="[0-9]*" inputmode="numeric"
                   value={this.state.farmerID}
                   onChange={event =>
                     this.setState({ farmerID: event.target.value })
@@ -127,7 +127,7 @@ export default class Farmer extends React.Component {
               </div>
               <div className="form-group">
                 <input
-                  type="text"
+                  type="number" pattern ="[0-9]*" inputmode="numeric"
                   value={this.state.farmerContact}
                   onChange={event =>
                     this.setState({ farmerContact: event.target.value })
@@ -144,7 +144,7 @@ export default class Farmer extends React.Component {
                     this.setState({ farmerAddress: event.target.value })
                   }
                   className="form-control"
-                  placeholder="Address"
+                  placeholder="Address" 
                 />
               </div> 
               <div className="form-group">
@@ -168,7 +168,7 @@ export default class Farmer extends React.Component {
               <h2 className="text-center">Crop Details</h2>
               <div className="form-group">
                 <input
-                  type="text"
+                  type="number" pattern ="[0-9]*" inputmode="numeric"
                   value={this.state.cropID}
                   onChange={event =>
                     this.setState({ cropID: event.target.value })
@@ -179,7 +179,7 @@ export default class Farmer extends React.Component {
               </div>
               <div className="form-group">
                 <input
-                  type="text"
+                 type ="text"
                   value={this.state.cropName}
                   onChange={event =>
                     this.setState({ cropName: event.target.value })
@@ -190,7 +190,7 @@ export default class Farmer extends React.Component {
               </div>
               <div className="form-group">
                 <input
-                  type="text"
+                  type="number" pattern ="[0-9]*" inputmode="numeric"
                   value={this.state.quantity}
                   onChange={event =>
                     this.setState({ quantity: event.target.value })
@@ -201,7 +201,7 @@ export default class Farmer extends React.Component {
               </div>
               <div className="form-group">
                 <input
-                  type="text"
+                  type="number" pattern ="[0-9]*" inputmode="numeric"
                   value={this.state.cropPrice}
                   onChange={event =>
                     this.setState({ cropPrice: event.target.value })
@@ -242,14 +242,13 @@ export default class Farmer extends React.Component {
               </thead>
               <tbody>
                 {this.state.crops.map((crop)=>{
-                 return(crop.faddr === this.state.account ?
+                 return(crop.faddr === this.state.account && crop.isBought===false ?
                    <tr>
                      <td>{crop.cropID}</td>
                      <td>{crop.cropName}</td>
                      <td>{crop.quantity}</td>
                      <td>{crop.cropPrice}</td>
-                     {/*<td>({record.signatureCount}/2)</td>*/}
-                   </tr>:<div>asd</div>
+                   </tr>: null 
                  )
                 })}
               </tbody>
