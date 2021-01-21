@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route,Redirect } from "react-router-dom";
-// import Patient from './patient'
-// import Hadmin from './hadmin'
-// import Labadmin from './ladmin'
-// import Insurance from './insurance'
 import './index.css'
 import Farmer from './Farmer';
 import Distributor from './Distributor';
 import Retailer from './Retailer';
 import Consumer from './Consumer';
 
-//import HealthCare from './HealthCare'
+
 const FullApp = () => (
   <Router>
     <div>
