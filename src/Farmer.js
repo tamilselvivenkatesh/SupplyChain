@@ -34,8 +34,39 @@ export default class Farmer extends React.Component {
     if(networkData) {
       this.supply = new web3.eth.Contract(SupplyChain.abi, networkData.address)
       const cropCount = await this.supply.methods.cropCount().call()
+      const leaseCount = await this.supply.methods.leaseCount().call()
+      const saleCount = await this.supply.methods.saleCount().call()
       let cropArr = [];
       let crop = [];
+      let leaseArr = [];
+      let lease = [];
+      let saleArr =[];
+      let sale = [];
+      
+      //number of lands for lease
+      for(let i=0;i<leaseCount;i++)
+      {
+        leaseArr.push(await this.supply.methods.leaseArr(i).call())
+      }
+      for(let i=0;i<leaseArr.length;i++)
+      {
+        lease.push(await this.supply.methods.mlland(leaseArr[i]).call())  
+      }
+      this.setState({leases:lease})
+
+      //number of lands for sale
+      for(let i=0;i<saleCount;i++)
+      {
+        saleArr.push(await this.supply.methods.saleArr(i).call())
+      }
+      for(let i=0;i<saleArr.length;i++)
+      {
+        sale.push(await this.supply.methods.msland(saleArr[i]).call())  
+      }
+      this.setState({sales:sale})
+
+    
+      //farmer add crop
       for(let i=0;i<cropCount;i++)
       {
         cropArr.push(await this.supply.methods.cropArr(i).call())
@@ -45,6 +76,7 @@ export default class Farmer extends React.Component {
         crop.push(await this.supply.methods.mcrop(cropArr[i]).call())  
       }
       this.setState({crops:crop})
+      //current farmer
       let farmerArr = [];
       farmerArr.push(await this.supply.methods.mfarmer(this.state.account).call())   
       this.setState({farmerArrs:farmerArr})
@@ -55,6 +87,8 @@ export default class Farmer extends React.Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleCropClick = this.handleCropClick.bind(this);
+    this.handleLeasePurchase=this.handleLeasePurchase.bind(this);
+    this.handleSalePurchase=this.handleSalePurchase.bind(this);
     this.state = {
       farmerID:"",
       farmerName:"",
@@ -65,12 +99,23 @@ export default class Farmer extends React.Component {
       quantity:"",
       cropPrice:"",
       crops: [],
+      landId:"",
+      landAddress:"",
+      soilType:"",
+      cropType:"",
+      duration:"",
+      cost:"",
+      area:"",
       farmerArrs: [],
+      leases: [],
+      sales: [],
       faddr:"",
-      isDetailsFilled:false
+      isDetailsFilled:false,
+      isBought:false
     };
   }
 
+  //add farmer details
   handleClick(event) {
     event.preventDefault();
     window.web3.eth.getCoinbase((err, account) => {
@@ -83,6 +128,7 @@ export default class Farmer extends React.Component {
       })
     }
 
+    //add crop button
   handleCropClick(event) {
     event.preventDefault();
     window.web3.eth.getCoinbase((err, account) => {
@@ -94,6 +140,28 @@ export default class Farmer extends React.Component {
         this.state.cropPrice).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
       })
     }
+    
+    //purchase lease land button
+    handleLeasePurchase(event) {
+      event.preventDefault();
+      let id=event.target.value;
+     // console.log(id);
+     window.web3.eth.getCoinbase((err, account) => {
+     this.setState({account}) 
+     this.supply.methods.purchaseLandLease(id).send({ from: account}).then(()=>{ this.setState({ message: "Lease Land purchased Added" });  window.location.reload(false);});
+       })
+      }
+
+      //purchase sale land button
+    handleSalePurchase(event) {
+      event.preventDefault();
+      let id=event.target.value;
+     // console.log(id);
+     window.web3.eth.getCoinbase((err, account) => {
+     this.setState({account}) 
+     this.supply.methods.purchaseLandSale(id).send({ from: account}).then(()=>{ this.setState({ message: "Sale Land purchased Added" });  window.location.reload(false);});
+       })
+      }
 
   render() {
     return (
@@ -228,8 +296,134 @@ export default class Farmer extends React.Component {
           </div>
         </div>
 
+       
+
         <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
+          <h2 className="text-center">Lease Land Records</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Land ID</th>
+                  <th>Address</th>
+                  <th>Soil Type</th>
+                  <th>Crop Type</th>
+                  <th>Area</th>
+                  <th>Cost</th>
+                  <th>Duration</th>
+                  <th>Purchase Land</th>
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.leases.map((land)=>{
+                 return(land.isBought ? null :
+                   <tr>
+                     <td>{ land.landID}</td>
+                      <td>{ land.landAddress}</td>
+                     <td>{ land.soilType}</td>
+                     <td>{ land.cropType}</td>
+                     <td>{ land.area}</td>
+                     <td>{ land.cost}</td>
+                     <td>{ land.duration}</td>
+                     <td><button type="button" className="btn btn-primary btn-block" value= {land.landID} onClick={this.handleLeasePurchase}>Purchase</button></td>
+                   </tr> 
+                 )
+                })}
+              </tbody>
+            </table>
+
+            {/* purchased lease land table */}
+            <h2 className="text-center">Purchased Lease Land</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Land ID</th>
+                  <th>Address</th>
+                  <th>Soil Type</th>
+                  <th>Crop Type</th>
+                  <th>Area</th>
+                  <th>Cost</th>
+                  <th>Duration</th>
+                  
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.leases.map((land)=>{
+                 return(land.isBought ?
+                   <tr>
+                     <td>{ land.landID}</td>
+                     <td>{ land.landAddress}</td>
+                     <td>{ land.soilType}</td>
+                     <td>{ land.cropType}</td>
+                     <td>{ land.area}</td>
+                     <td>{ land.cost}</td>
+                     <td>{ land.duration}</td>
+                     </tr> : null
+                 )
+                })}
+              </tbody>
+            </table>
+
+            <h2 className="text-center">Sale Land Records</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Land ID</th>
+                  <th>Address</th>
+                  <th>Soil Type</th>
+                  <th>Crop Type</th>
+                  <th>Area</th>
+                  <th>Cost</th>
+                  <th>Purchase Land</th>
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.sales.map((land)=>{
+                 return(land.isBought ? null :
+                   <tr>
+                     <td>{ land.landID}</td>
+                      <td>{ land.landAddress}</td>
+                     <td>{ land.soilType}</td>
+                     <td>{ land.cropType}</td>
+                     <td>{ land.area}</td>
+                     <td>{ land.cost}</td>
+                     <td><button type="button" className="btn btn-primary btn-block" value= {land.landID} onClick={this.handleSalePurchase}>Purchase</button></td>
+                   </tr> 
+                 )
+                })}
+              </tbody>
+            </table>
+
+            {/* purchased sale land table */}
+            <h2 className="text-center">Purchased Sale Land</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Land ID</th>
+                  <th>Address</th>
+                  <th>Soil Type</th>
+                  <th>Crop Type</th>
+                  <th>Area</th>
+                  <th>Cost</th>
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.sales.map((land)=>{
+                 return(land.isBought ?
+                   <tr>
+                     <td>{ land.landID}</td>
+                     <td>{ land.landAddress}</td>
+                     <td>{ land.soilType}</td>
+                     <td>{ land.cropType}</td>
+                     <td>{ land.area}</td>
+                     <td>{ land.cost}</td>
+                     </tr> : null
+                 )
+                })}
+              </tbody>
+            </table>
+          
+            
             <h2 className="text-center">Crop Records</h2>
             <table class="table table-bordered table-dark table-striped">
               <thead>
@@ -253,6 +447,7 @@ export default class Farmer extends React.Component {
                 })}
               </tbody>
             </table>
+
             <h2 className="text-center">Farmer Record</h2>
             <table class="table table-bordered table-dark table-striped">
               <thead>
@@ -281,5 +476,5 @@ export default class Farmer extends React.Component {
         </div>
       </div>
     );
-  }
+}
 }

@@ -4,7 +4,7 @@ export class Retailer extends Component {
     render() {
         return (
             <div>
-                hii retail
+                hii Basith
             </div>
         )
     }
