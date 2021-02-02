@@ -162,7 +162,6 @@ export default class Landlord extends React.Component {
         this.setState({isLease:false})
      }
  
-
   render() {
     return (
       <div className="container container-fluid login-conatiner">
