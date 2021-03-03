@@ -89,7 +89,6 @@ export default class Landlord extends React.Component {
       landId:"",
       landAddress:"",
       soilType:"",
-      cropType:"",
       duration:"",
       cost:"",
       area:"",
@@ -126,7 +125,6 @@ export default class Landlord extends React.Component {
         this.state.landID,
         this.state.landAddress,
         this.state.soilType,
-        this.state.cropType,
         this.state.area,
         this.state.cost,
         this.state.duration).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Lease" });  window.location.reload(false);});
@@ -143,7 +141,6 @@ export default class Landlord extends React.Component {
         this.state.landID,
         this.state.landAddress,
         this.state.soilType,
-        this.state.cropType,
         this.state.area,
         this.state.cost).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Sale" });  window.location.reload(false);});
       })
@@ -298,17 +295,6 @@ export default class Landlord extends React.Component {
           </div>
           <div className="form-group">
             <input
-              type="text"
-              value={this.state.cropType}
-              onChange={event =>
-                this.setState({ cropType: event.target.value })
-              }
-              className="form-control"
-              placeholder="Crop Type"
-            />
-          </div>
-          <div className="form-group">
-            <input
               type="number" pattern ="[0-9]*" inputmode="numeric"
               value={this.state.area}
               onChange={event =>
@@ -398,17 +384,6 @@ export default class Landlord extends React.Component {
           </div>
           <div className="form-group">
             <input
-              type="text"
-              value={this.state.cropType}
-              onChange={event =>
-                this.setState({ cropType: event.target.value })
-              }
-              className="form-control"
-              placeholder="Crop Type"
-            />
-          </div>
-          <div className="form-group">
-            <input
               type="number" pattern ="[0-9]*" inputmode="numeric"
               value={this.state.area}
               onChange={event =>
@@ -459,7 +434,6 @@ export default class Landlord extends React.Component {
                   <th>Land ID</th>
                   <th>Address</th>
                   <th>Soil Type</th>
-                  <th>Crop Type</th>
                   <th>Area</th>
                   <th>Cost</th>
                   <th>Duration</th>
@@ -472,7 +446,7 @@ export default class Landlord extends React.Component {
                      <td>{ land.landID}</td>
                      <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      <td>{ land.duration}</td>
@@ -491,7 +465,6 @@ export default class Landlord extends React.Component {
                   <th>Land ID</th>
                   <th>Address</th>
                   <th>Soil Type</th>
-                  <th>Crop Type</th>
                   <th>Area</th>
                   <th>Cost</th>
               </tr>
@@ -503,7 +476,7 @@ export default class Landlord extends React.Component {
                      <td>{ land.landID}</td>
                      <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
 

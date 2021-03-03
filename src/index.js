@@ -7,6 +7,7 @@ import Distributor from './Distributor';
 import Retailer from './Retailer';
 import Consumer from './Consumer';
 import Landlord from './Landlord';
+import Seed from './Seed';
 
 
 const FullApp = () => (
@@ -18,11 +19,11 @@ const FullApp = () => (
     </header>
       <Route exact path="/" component={App} />
       <Route path="/Landlord" component={Landlord} />
+      <Route path="/Seed" component={Seed} />
       <Route path="/Farmer" component={Farmer} />
       <Route path="/Distributor" component={Distributor} />
       <Route path="/Retailer" component={Retailer} />
       <Route path="/Consumer" component={Consumer} />
-
     </div>
   </Router>
 );
@@ -43,7 +44,8 @@ class App extends React.Component {
       <div className="container container-fluid login-conatiner">
       {this.state.login ? this.state.user === "" ? this.state.password === "farmer" ?<Redirect to="/Farmer" /> :
       this.state.password === "landlord" ?<Redirect to="/Landlord" /> :
-     this.state.password === "distributor" ?<Redirect to="/Distributor" /> :
+      this.state.password === "seed" ?<Redirect to="/Seed" /> :
+      this.state.password === "distributor" ?<Redirect to="/Distributor" /> :
       this.state.password === "retailer"? <Redirect to="/Retailer" />:
       this.state.password === "consumer"? <Redirect to="/Consumer" />:null:null:null}
 <div style={{
@@ -58,6 +60,7 @@ class App extends React.Component {
           <select id="selection"  className="form-control">
             <option selected>Select Mode..</option>
             <option>Landlord</option>
+            <option>Seed/Fertilizer Dealer</option>
             <option>Farmer</option>
             <option>Distributor</option>
             <option>Retailer</option>

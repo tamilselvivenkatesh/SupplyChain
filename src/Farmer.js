@@ -36,12 +36,19 @@ export default class Farmer extends React.Component {
       const cropCount = await this.supply.methods.cropCount().call()
       const leaseCount = await this.supply.methods.leaseCount().call()
       const saleCount = await this.supply.methods.saleCount().call()
+      const seedCount = await this.supply.methods.seedCount().call()
+      const fertilizerCount = await this.supply.methods.fertilizerCount().call()
+
       let cropArr = [];
       let crop = [];
       let leaseArr = [];
       let lease = [];
       let saleArr =[];
       let sale = [];
+      let seedArr = [];
+      let seed = [];
+      let fertilizerArr =[];
+      let fertilizer=[];
       
       //number of lands for lease
       for(let i=0;i<leaseCount;i++)
@@ -65,7 +72,28 @@ export default class Farmer extends React.Component {
       }
       this.setState({sales:sale})
 
-    
+      //number of seed
+      for(let i=0;i<seedCount;i++)
+      {
+        seedArr.push(await this.supply.methods.seedArr(i).call())
+      }
+      for(let i=0;i<seedArr.length;i++)
+      {
+        seed.push(await this.supply.methods.mseed(seedArr[i]).call())  
+      }
+      this.setState({seeds:seed})
+
+      //number of fertilizer
+      for(let i=0;i<fertilizerCount;i++)
+      {
+        fertilizerArr.push(await this.supply.methods.fertilizerArr(i).call())
+      }
+      for(let i=0;i<fertilizerArr.length;i++)
+      {
+        fertilizer.push(await this.supply.methods.mfertilizer(fertilizerArr[i]).call())  
+      }
+      this.setState({fertilizers:fertilizer})
+
       //farmer add crop
       for(let i=0;i<cropCount;i++)
       {
@@ -89,6 +117,8 @@ export default class Farmer extends React.Component {
     this.handleCropClick = this.handleCropClick.bind(this);
     this.handleLeasePurchase=this.handleLeasePurchase.bind(this);
     this.handleSalePurchase=this.handleSalePurchase.bind(this);
+    this.handleSeedPurchase=this.handleSeedPurchase.bind(this);
+    this.handleFertilizerPurchase=this.handleFertilizerPurchase.bind(this);
     this.state = {
       farmerID:"",
       farmerName:"",
@@ -98,11 +128,20 @@ export default class Farmer extends React.Component {
       cropName:"",
       quantity:"",
       cropPrice:"",
+      seedID:"",
+      seedName:"",
+      seedQuantity:"",
+      seedcost:"",
+      fertilizerID:"",
+      fertilizerName:"",
+      fertilizerQuantity:"",
+      fertilizerCost:"",
+      seeds: [],
+      fertilizers: [],
       crops: [],
       landId:"",
       landAddress:"",
       soilType:"",
-      cropType:"",
       duration:"",
       cost:"",
       area:"",
@@ -159,7 +198,29 @@ export default class Farmer extends React.Component {
      // console.log(id);
      window.web3.eth.getCoinbase((err, account) => {
      this.setState({account}) 
-     this.supply.methods.purchaseLandSale(id).send({ from: account}).then(()=>{ this.setState({ message: "Sale Land purchased Added" });  window.location.reload(false);});
+     this.supply.methods.purchaseLandSale(id).send({ from: account}).then(()=>{ this.setState({ message: "Sale land purchased Added" });  window.location.reload(false);});
+       })
+      }
+
+      //purchase seed land button
+    handleSeedPurchase(event) {
+      event.preventDefault();
+      let id=event.target.value;
+     // console.log(id);
+     window.web3.eth.getCoinbase((err, account) => {
+     this.setState({account}) 
+     this.supply.methods.purchaseSeed(id).send({ from: account}).then(()=>{ this.setState({ message: "Seed purchased Added" });  window.location.reload(false);});
+       })
+      }
+
+      //purchase fertilizer land button
+    handleFertilizerPurchase(event) {
+      event.preventDefault();
+      let id=event.target.value;
+     // console.log(id);
+     window.web3.eth.getCoinbase((err, account) => {
+     this.setState({account}) 
+     this.supply.methods.purchaseFertilizer(id).send({ from: account}).then(()=>{ this.setState({ message: "Fertilizer purchased Added" });  window.location.reload(false);});
        })
       }
 
@@ -300,6 +361,116 @@ export default class Farmer extends React.Component {
 
         <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
+
+          {/* seed records */}
+          <h2 className="text-center">Seed Records</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Seed ID</th>
+                  <th>Name</th>
+                  <th>Cost</th>
+                  <th>Quantity</th>
+                  <th>Purchase Seed</th>
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.seeds.map((seed)=>{
+                 return(seed.isBought ? null :
+                   <tr>
+                     <td>{ seed.seedID}</td>
+                     <td>{ seed.seedName}</td>
+                     <td>{ seed.seedcost}</td>
+                     <td>{ seed.seedQuantity}</td>
+                     <td><button type="button" className="btn btn-primary btn-block" value= {seed.seedID} onClick={this.handleSeedPurchase}>Purchase</button></td>
+                   </tr> 
+                 )
+                })}
+              </tbody>
+            </table>
+
+            {/* purchased seed table */}
+            <h2 className="text-center">Purchased Seeds</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Seed ID</th>
+                  <th>Seed Name</th>
+                  <th>Cost</th>
+                  <th>Quantity</th>
+                  
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.seeds.map((seed)=>{
+                 return(seed.isBought ?
+                   <tr>
+                     <td>{ seed.seedID}</td>
+                     <td>{ seed.seedName}</td>
+                     <td>{ seed.seedcost}</td>
+                     <td>{ seed.seedQuantity}</td>
+                     </tr> : null
+                 )
+                })}
+              </tbody>
+            </table>
+
+            {/* fertilizer records */}
+
+            <h2 className="text-center">Fertilizer Records</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Fertilizer ID</th>
+                  <th>Name</th>
+                  <th>Cost</th>
+                  <th>Quantity</th>
+                  <th>Purchase Fertilizer</th>
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.fertilizers.map((fertilizer)=>{
+                 return(fertilizer.isBought ? null :
+                   <tr>
+                     <td>{ fertilizer.fertilizerID}</td>
+                     <td>{ fertilizer.fertilizerName}</td>
+                     <td>{ fertilizer.fertilizerCost}</td>
+                     <td>{ fertilizer.fertilizerQuantity}</td>
+                     <td><button type="button" className="btn btn-primary btn-block" value= {fertilizer.fertilizerID} onClick={this.handleFertilizerPurchase}>Purchase</button></td>
+                   </tr> 
+                 )
+                })}
+              </tbody>
+            </table>
+
+            <h2 className="text-center">Purchased Fertilizers</h2>
+            <table class="table table-bordered table-dark table-striped">
+              <thead>
+              <tr>
+                  <th>Fertilizer ID</th>
+                  <th>Fertilizer Name</th>
+                  <th>Cost</th>
+                  <th>Quantity</th>
+                  
+              </tr>
+              </thead>
+              <tbody>
+                {this.state.fertilizers.map((fertilizer)=>{
+                 return(fertilizer.isBought ?
+                   <tr>
+                     <td>{ fertilizer.fertilizerID}</td>
+                     <td>{ fertilizer.fertilizerName}</td>
+                     <td>{ fertilizer.fertilizerCost}</td>
+                     <td>{ fertilizer.fertilizerQuantity}</td>
+
+                     </tr> : null
+                 )
+                })}
+              </tbody>
+            </table>
+
+            {/* Lease land records */}
+
           <h2 className="text-center">Lease Land Records</h2>
             <table class="table table-bordered table-dark table-striped">
               <thead>
@@ -321,7 +492,7 @@ export default class Farmer extends React.Component {
                      <td>{ land.landID}</td>
                       <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      <td>{ land.duration}</td>
@@ -354,7 +525,7 @@ export default class Farmer extends React.Component {
                      <td>{ land.landID}</td>
                      <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      <td>{ land.duration}</td>
@@ -384,7 +555,7 @@ export default class Farmer extends React.Component {
                      <td>{ land.landID}</td>
                       <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      <td><button type="button" className="btn btn-primary btn-block" value= {land.landID} onClick={this.handleSalePurchase}>Purchase</button></td>
@@ -414,7 +585,7 @@ export default class Farmer extends React.Component {
                      <td>{ land.landID}</td>
                      <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     <td>{ land.cropType}</td>
+                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      </tr> : null
