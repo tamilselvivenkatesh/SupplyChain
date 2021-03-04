@@ -92,7 +92,7 @@ export default class Distributor extends React.Component {
     this.supply.methods.addDist(
         this.state.distID,
         this.state.distName,
-        this.state.distContact,
+        this.state.distContact, 
         this.state.distAddress).send({ from: account}).then(()=>{ this.setState({ message: "Distributor Details Entered" });  window.location.reload(false);});
       })
     }
