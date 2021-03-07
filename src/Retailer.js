@@ -69,7 +69,7 @@ export default class Distributor extends React.Component {
     this.handlePurchase = this.handlePurchase.bind(this);
     this.state = {
       retailID:"",
-      reatilName:"",
+      retailName:"",
       retailAddress:"",
       retailContact:"",
       cropID:"",
