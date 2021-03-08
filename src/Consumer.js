@@ -67,6 +67,7 @@ export default class Distributor extends React.Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handlePurchase = this.handlePurchase.bind(this);
+    this.completePurchase = this.completePurchase.bind(this);
     this.state = {
       consumerID:"",
       consumerName:"",
@@ -78,6 +79,7 @@ export default class Distributor extends React.Component {
       cropPrice:"",
       crops: [],
       conss: [],
+      cartArr: [],
       consArrs: [],
       consumerArrs: [],
       caddr:"",
@@ -99,18 +101,28 @@ export default class Distributor extends React.Component {
       })
     }
 
+    completePurchase(event){
+      console.log("completing purchase")
+      window.web3.eth.getCoinbase((err, account) => {
+        this.setState({account}) 
+        let cart= this.state.cartArr;
+        for(let i=0;i<cart.length;i++){
+        this.supply.methods.consumerAddCrop(cart[i]).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+       } })
+    }
 
     handlePurchase(event) {
        event.preventDefault();
        let id=event.target.value;
-      // console.log(id);
-      window.web3.eth.getCoinbase((err, account) => {
-      this.setState({account}) 
-      this.supply.methods.consumerAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
-        })
-       }
+       console.log(id);
+       let cart = this.state.cartArr;
+       cart.push(id);
+       let uniqueItems = [...new Set(cart)]
+       this.setState({cartArr:uniqueItems})
+      }
 
   render() {
+    console.log(this.state.cartArr);
     return (
       <div className="container container-fluid login-conatiner">
         <div>
@@ -183,6 +195,8 @@ export default class Distributor extends React.Component {
         <div className="col-md-12">
           <div className="c-list">
             <h2 className="text-center">Crop Records</h2>
+            <button type="button" className="btn btn-success btn-block"  onClick={this.completePurchase}>Complete Purchase</button>            
+            <br/>
             <table class="table table-bordered table-dark table-striped">
               <thead>
               <tr>
