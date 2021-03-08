@@ -59,12 +59,12 @@ class App extends React.Component {
 
           <select id="selection"  className="form-control">
             <option selected>Select Mode..</option>
-            <option>Landlord</option>
-            <option>Seed/Fertilizer Dealer</option>
-            <option>Farmer</option>
-            <option>Distributor</option>
-            <option>Retailer</option>
-            <option>Consumer</option>
+            <button type="button" className="btn btn-success btn-block" >Landlord</button> <br/>           
+            <button type="button" className="btn btn-success btn-block" >Seed/Fertilizer Dealer</button> <br/>           
+            <button type="button" className="btn btn-success btn-block">Farmer</button>  <br/>        
+            <button type="button" className="btn btn-success btn-block">Distributor</button> <br/>          
+            <button type="button" className="btn btn-success btn-block">Retailer</button> <br/>          
+            <button type="button" className="btn btn-success btn-block">Consumer</button> <br/>        
           </select>
 </div>
 <div className="form-group">

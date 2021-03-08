@@ -68,6 +68,8 @@ export default class Distributor extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handlePurchase = this.handlePurchase.bind(this);
     this.completePurchase = this.completePurchase.bind(this);
+    this.removePurchase = this.removePurchase.bind(this);
+
     this.state = {
       consumerID:"",
       consumerName:"",
@@ -119,13 +121,76 @@ export default class Distributor extends React.Component {
        cart.push(id);
        let uniqueItems = [...new Set(cart)]
        this.setState({cartArr:uniqueItems})
+       alert("Successfully added crop to cart")
+      }
+      
+      removePurchase(event){
+        event.preventDefault();
+        let id=event.target.value;
+        console.log(id);
+        let cart = this.state.cartArr;
+        let index = cart.indexOf(id);
+        if (index !== -1) {
+        cart.splice(index, 1);
+        }
+        this.setState({cartArr:cart})
       }
 
   render() {
-    console.log(this.state.cartArr);
     return (
       <div className="container container-fluid login-conatiner">
         <div>
+        
+<div class="container">
+{/* Cart modal starts */}
+<br/>
+<button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal">Cart</button>
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Your Cart</h4>
+        </div>
+        <div class="modal-body">
+          {
+            <table class="table table-bordered table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Crop ID</th>
+                <th>Crop Name</th>
+                <th>Quantity</th>
+                <th>Crop Price</th>
+                <th>Purchase Crop</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.crops.map((crop)=>{
+               return(
+                 this.state.cartArr.includes(crop.cropID)?
+                 <tr>
+                   <td>{crop.cropID}</td>
+                   <td>{crop.cropName}</td>
+                   <td>{crop.quantity}</td>
+                   <td>{crop.cropPrice}</td>
+                   <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.removePurchase} >Remove</button></td>
+                 </tr>:null
+               )
+              })}
+            </tbody>
+          </table>    
+          }
+          {/* {console.log(this.state.crops)} */}
+        </div>
+        <div class="modal-footer">
+        <button type="button" className="btn btn-success btn-block"  onClick={this.completePurchase}>Complete Purchase</button>            
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+{/* cart Modal ends */}
           {this.state.isDetailsFilled ? null:
         <div className="login-form">
             <form method="post" autoComplete="off">
@@ -195,7 +260,6 @@ export default class Distributor extends React.Component {
         <div className="col-md-12">
           <div className="c-list">
             <h2 className="text-center">Crop Records</h2>
-            <button type="button" className="btn btn-success btn-block"  onClick={this.completePurchase}>Complete Purchase</button>            
             <br/>
             <table class="table table-bordered table-dark table-striped">
               <thead>
