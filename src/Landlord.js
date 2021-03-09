@@ -229,6 +229,8 @@ export default class Landlord extends React.Component {
           </div>}
 
         {/* //sale and lease button */}
+        {this.state.isDetailsFilled ? 
+ 
           <div className="login-form">
           <form  autoComplete="off">
           <div className="form-group">
@@ -251,7 +253,7 @@ export default class Landlord extends React.Component {
                 </button>
               </div>
               </form>
-              </div>
+              </div>: null }  
 
        { this.state.isLease ? 
       //lease form
@@ -427,88 +429,142 @@ export default class Landlord extends React.Component {
         
         <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
-            <h2 className="text-center">Land Lease Records</h2>
+          {/* Land Lease Records */}
+          <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Land Lease Records</button>
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Land Lease Records</h4>
+        </div>
+        <div class="modal-body">
+          {
+           <table class="table table-bordered table-dark table-striped">
+           <thead>
+           <tr>
+               <th>Land ID</th>
+               <th>Address</th>
+               <th>Soil Type</th>
+               <th>Area</th>
+               <th>Cost</th>
+               <th>Duration</th>
+           </tr>
+           </thead>
+           <tbody>
+             {this.state.leases.map((land)=>{
+              return(land.laddr === this.state.account   && land.isBought===false ?
+                <tr>
+                  <td>{ land.landID}</td>
+                  <td>{ land.landAddress}</td>
+                  <td>{ land.soilType}</td>
+                  {/* <td>{ land.cropType}</td> */}
+                  <td>{ land.area}</td>
+                  <td>{ land.cost}</td>
+                  <td>{ land.duration}</td>
+                </tr>: null 
+              )
+             })}
+           </tbody>
+         </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
+
+            {/* //land sale Records */}
+            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Land Sale Record</button>
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Land Sale Record</h4>
+        </div>
+        <div class="modal-body">
+          {
             <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Land ID</th>
-                  <th>Address</th>
-                  <th>Soil Type</th>
-                  <th>Area</th>
-                  <th>Cost</th>
-                  <th>Duration</th>
+            <thead>
+            <tr>
+                <th>Land ID</th>
+                <th>Address</th>
+                <th>Soil Type</th>
+                <th>Area</th>
+                <th>Cost</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.sales.map((land)=>{
+               return(land.laddr === this.state.account && land.isBought===false ?
+                 <tr>
+                   <td>{ land.landID}</td>
+                   <td>{ land.landAddress}</td>
+                   <td>{ land.soilType}</td>
+                   {/* <td>{ land.cropType}</td> */}
+                   <td>{ land.area}</td>
+                   <td>{ land.cost}</td>
+
+                 </tr>: null 
+               )
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
+  {/* Landlord Record */}
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Landlord Record</button>
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Landlord Record</h4>
+        </div>
+        <div class="modal-body">
+          {
+            <table class="table table-bordered table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Landlord ID</th>
+                <th>Landlord Name</th>
+                <th>Landlord Contact</th>
+                <th>Landlord Address</th>
               </tr>
-              </thead>
-              <tbody>
-                {this.state.leases.map((land)=>{
-                 return(land.laddr === this.state.account   && land.isBought===false ?
-                   <tr>
-                     <td>{ land.landID}</td>
-                     <td>{ land.landAddress}</td>
-                     <td>{ land.soilType}</td>
-                     {/* <td>{ land.cropType}</td> */}
-                     <td>{ land.area}</td>
-                     <td>{ land.cost}</td>
-                     <td>{ land.duration}</td>
-                   </tr>: null 
-                 )
-                })}
-              </tbody>
-            </table>
-
-            {/* //sale Records */}
-
-            <h2 className="text-center">Land Sale Records</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Land ID</th>
-                  <th>Address</th>
-                  <th>Soil Type</th>
-                  <th>Area</th>
-                  <th>Cost</th>
-              </tr>
-              </thead>
-              <tbody>
-                {this.state.sales.map((land)=>{
-                 return(land.laddr === this.state.account && land.isBought===false ?
-                   <tr>
-                     <td>{ land.landID}</td>
-                     <td>{ land.landAddress}</td>
-                     <td>{ land.soilType}</td>
-                     {/* <td>{ land.cropType}</td> */}
-                     <td>{ land.area}</td>
-                     <td>{ land.cost}</td>
-
-                   </tr>: null 
-                 )
-                })}
-              </tbody>
-            </table>
-        
-            <h2 className="text-center">Landlord Record</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Landlord ID</th>
-                  <th>Landlord Name</th>
-                  <th>Landlord Contact</th>
-                  <th>Landlord Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.landlordArrs.map((record)=>{
-                 return(
-                   <tr>
-                     <td>{record.landlordID}</td>
-                     <td>{record.landlordName}</td>
-                     <td>{record.landlordContact}</td>
-                     <td>{record.landlordAddress}</td>
-                   </tr>
-                 ) 
-                })}
-              </tbody>
-            </table>
+            </thead>
+            <tbody>
+              {this.state.landlordArrs.map((record)=>{
+               return(
+                 <tr>
+                   <td>{record.landlordID}</td>
+                   <td>{record.landlordName}</td>
+                   <td>{record.landlordContact}</td>
+                   <td>{record.landlordAddress}</td>
+                 </tr>
+               ) 
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
           
           </div>
         </div>

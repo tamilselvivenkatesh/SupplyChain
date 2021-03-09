@@ -144,7 +144,8 @@ export default class Distributor extends React.Component {
 <div class="container">
 {/* Cart modal starts */}
 <br/>
-<button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal">Cart</button>
+
+<button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal">Cart</button> 
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -259,82 +260,136 @@ export default class Distributor extends React.Component {
 
         <div className="col-md-12">
           <div className="c-list">
-            <h2 className="text-center">Crop Records</h2>
-            <br/>
+             {/* Crop records */}
+             {this.state.isDetailsFilled ?
+             <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Crop Record</button> : null }
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Crop Record</h4>
+        </div>
+        <div class="modal-body">
+          {
+             <table class="table table-bordered table-dark table-striped">
+             <thead>
+             <tr>
+                 <th>Crop ID</th>
+                 <th>Crop Name</th>
+                 <th>Quantity</th>
+                 <th>Crop Price</th>
+                 <th>Purchase Crop</th>
+             </tr>
+             </thead>
+             <tbody>
+               {this.state.crops.map((crop)=>{
+                return(crop.isBought && !crop.isBoughtByConsumer ?
+                  <tr>
+                    <td>{crop.cropID}</td>
+                    <td>{crop.cropName}</td>
+                    <td>{crop.quantity}</td>
+                    <td>{crop.cropPrice}</td>
+                    <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
+                  </tr> : null
+                )
+               })}
+             </tbody>
+           </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+         {/* Purchased records */}
+         {this.state.isDetailsFilled ?
+         <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchased records </button> : null }
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Purchased records </h4>
+        </div>
+        <div class="modal-body">
+          {
             <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Crop ID</th>
-                  <th>Crop Name</th>
-                  <th>Quantity</th>
-                  <th>Crop Price</th>
-                  <th>Purchase Crop</th>
+            <thead>
+            <tr>
+                <th>Crop ID</th>
+                <th>Crop Name</th>
+                <th>Quantity</th>
+                <th>Crop Price</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.crops.map((crop)=>{
+               return(crop.isBoughtByConsumer ? 
+                 <tr>
+                   <td>{crop.cropID}</td>
+                   <td>{crop.cropName}</td>
+                   <td>{crop.quantity}</td>
+                   <td>{crop.cropPrice}</td>
+                 </tr>: null
+               ) 
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
+  {/* Consumer Record */}
+  {this.state.isDetailsFilled ?
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Consumer Record</button> : null }
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Consumer Record</h4>
+        </div>
+        <div class="modal-body">
+          {
+            <table class="table table-bordered table-dark table-striped">
+            <thead>
+            <tr>
+                <th>consumer ID</th>
+                <th>consumer Name</th>
+                <th>consumer Address</th>
+                <th>consumer Contact</th>
               </tr>
-              </thead>
-              <tbody>
-                {this.state.crops.map((crop)=>{
-                 return(crop.isBought && !crop.isBoughtByConsumer ?
-                   <tr>
-                     <td>{crop.cropID}</td>
-                     <td>{crop.cropName}</td>
-                     <td>{crop.quantity}</td>
-                     <td>{crop.cropPrice}</td>
-                     <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
-                   </tr> : null
-                 )
-                })}
-              </tbody>
-            </table>
-
-            {/* <div className="col-md-12">
-          <div className="c-list"> */}
-            <h2 className="text-center">Purchased Crops</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Crop ID</th>
-                  <th>Crop Name</th>
-                  <th>Quantity</th>
-                  <th>Crop Price</th>
-              </tr>
-              </thead>
-              <tbody>
-                {this.state.crops.map((crop)=>{
-                 return(crop.isBoughtByConsumer ? 
-                   <tr>
-                     <td>{crop.cropID}</td>
-                     <td>{crop.cropName}</td>
-                     <td>{crop.quantity}</td>
-                     <td>{crop.cropPrice}</td>
-                   </tr>: null
-                 ) 
-                })}
-              </tbody>
-            </table>
-     
-            <h2 className="text-center">Consumer Record</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>consumer ID</th>
-                  <th>consumer Name</th>
-                  <th>consumer Address</th>
-                  <th>consumer Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.consumerArrs.map((record)=>{
-                 return(
-                   <tr>
-                     <td>{record.consumerID}</td>
-                     <td>{record.consumerName}</td>
-                     <td>{record.consumerAddress}</td>
-                     <td>{record.consumerContact}</td>
-                   </tr>
-                 ) 
-                })}
-              </tbody>
-            </table>
+            </thead>
+            <tbody>
+              {this.state.consumerArrs.map((record)=>{
+               return(
+                 <tr>
+                   <td>{record.consumerID}</td>
+                   <td>{record.consumerName}</td>
+                   <td>{record.consumerAddress}</td>
+                   <td>{record.consumerContact}</td>
+                 </tr>
+               ) 
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+           
           
           </div>
         </div>

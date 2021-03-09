@@ -181,82 +181,137 @@ export default class Distributor extends React.Component {
 
         <div className="col-md-12">
           <div className="c-list">
-            <h2 className="text-center">Crop Records</h2>
+            {/* Crop Records */}
+            {this.state.isDetailsFilled ?
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Crop Record</button> : null }
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Crop Record</h4>
+        </div>
+        <div class="modal-body">
+          {
+           <table class="table table-bordered table-dark table-striped">
+           <thead>
+           <tr>
+               <th>Crop ID</th>
+               <th>Crop Name</th>
+               <th>Quantity</th>
+               <th>Crop Price</th>
+               <th>Purchase Crop</th>
+           </tr>
+           </thead>
+           <tbody>
+             {this.state.crops.map((crop)=>{
+              return(crop.isBought && !crop.isBoughtByRetailer ?
+                <tr>
+                  <td>{crop.cropID}</td>
+                  <td>{crop.cropName}</td>
+                  <td>{crop.quantity}</td>
+                  <td>{crop.cropPrice}</td>
+                  <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
+                </tr> : null
+              )
+             })}
+           </tbody>
+         </table> 
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+           
+  {/* Purchased Crops */}
+  {this.state.isDetailsFilled ?
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchased Crops</button> : null }
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Purchased Crops</h4>
+        </div>
+        <div class="modal-body">
+          {
+           <table class="table table-bordered table-dark table-striped">
+           <thead>
+           <tr>
+               <th>Crop ID</th>
+               <th>Crop Name</th>
+               <th>Quantity</th>
+               <th>Crop Price</th>
+           </tr>
+           </thead>
+           <tbody>
+             {this.state.crops.map((crop)=>{
+              return(crop.isBoughtByRetailer ? 
+                <tr>
+                  <td>{crop.cropID}</td>
+                  <td>{crop.cropName}</td>
+                  <td>{crop.quantity}</td>
+                  <td>{crop.cropPrice}</td>
+                </tr>: null
+              ) 
+             })}
+           </tbody>
+         </table>
+   
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
+  {/* Retailer Record */}
+  {this.state.isDetailsFilled ?
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Retailer Record</button> : null }
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Retailer Record</h4>
+        </div>
+        <div class="modal-body">
+          {
             <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Crop ID</th>
-                  <th>Crop Name</th>
-                  <th>Quantity</th>
-                  <th>Crop Price</th>
-                  <th>Purchase Crop</th>
+            <thead>
+            <tr>
+                <th>Retailer ID</th>
+                <th>Retailer Name</th>
+                <th>Retailer Address</th>
+                <th>Retailer Contact</th>
               </tr>
-              </thead>
-              <tbody>
-                {this.state.crops.map((crop)=>{
-                 return(crop.isBought && !crop.isBoughtByRetailer ?
-                   <tr>
-                     <td>{crop.cropID}</td>
-                     <td>{crop.cropName}</td>
-                     <td>{crop.quantity}</td>
-                     <td>{crop.cropPrice}</td>
-                     <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
-                   </tr> : null
-                 )
-                })}
-              </tbody>
-            </table>
-
-            {/* <div className="col-md-12">
-          <div className="c-list"> */}
-            <h2 className="text-center">Purchased Crops</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Crop ID</th>
-                  <th>Crop Name</th>
-                  <th>Quantity</th>
-                  <th>Crop Price</th>
-              </tr>
-              </thead>
-              <tbody>
-                {this.state.crops.map((crop)=>{
-                 return(crop.isBoughtByRetailer ? 
-                   <tr>
-                     <td>{crop.cropID}</td>
-                     <td>{crop.cropName}</td>
-                     <td>{crop.quantity}</td>
-                     <td>{crop.cropPrice}</td>
-                   </tr>: null
-                 ) 
-                })}
-              </tbody>
-            </table>
-     
-            <h2 className="text-center">Retailer Record</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Retailer ID</th>
-                  <th>Retailer Name</th>
-                  <th>Retailer Address</th>
-                  <th>Retailer Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.retailerArrs.map((record)=>{
-                 return(
-                   <tr>
-                     <td>{record.retailID}</td>
-                     <td>{record.retailName}</td>
-                     <td>{record.retailAddress}</td>
-                     <td>{record.retailContact}</td>
-                   </tr>
-                 ) 
-                })}
-              </tbody>
-            </table>
-          
+            </thead>
+            <tbody>
+              {this.state.retailerArrs.map((record)=>{
+               return(
+                 <tr>
+                   <td>{record.retailID}</td>
+                   <td>{record.retailName}</td>
+                   <td>{record.retailAddress}</td>
+                   <td>{record.retailContact}</td>
+                 </tr>
+               ) 
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>  
           </div>
         </div>
       </div>

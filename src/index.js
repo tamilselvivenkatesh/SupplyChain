@@ -33,11 +33,19 @@ class App extends React.Component {
     this.state = {
       user:'',
       password:'',
-      login:false
+      login:false,
+      showpass:false
     }
+    
+    this.handlePass=this.handlePass.bind(this);
   }
   componentDidMount(){
     window.ethereum.enable();
+  }
+
+  handlePass(event){
+    event.preventDefault();
+    this.setState({showpass:true})
   }
   render() {
     return (
@@ -54,25 +62,23 @@ class App extends React.Component {
                     <div className="login-form">
                         <form method="post">
                         <h2 className="text-center">Log in</h2>
-
+{this.state.showpass?null:
   <div className="form-group">
-
-          <select id="selection"  className="form-control">
-            <option selected>Select Mode..</option>
-            <button type="button" className="btn btn-success btn-block" >Landlord</button> <br/>           
-            <button type="button" className="btn btn-success btn-block" >Seed/Fertilizer Dealer</button> <br/>           
-            <button type="button" className="btn btn-success btn-block">Farmer</button>  <br/>        
-            <button type="button" className="btn btn-success btn-block">Distributor</button> <br/>          
-            <button type="button" className="btn btn-success btn-block">Retailer</button> <br/>          
-            <button type="button" className="btn btn-success btn-block">Consumer</button> <br/>        
-          </select>
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Landlord</button> <br/>           
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Seed/Fertilizer Dealer</button> <br/>           
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Farmer</button>  <br/>        
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Distributor</button> <br/>          
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Retailer</button> <br/>          
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePass}>Consumer</button> <br/>        
 </div>
+}
 <div className="form-group">
-
-          <input type="password"  className="form-control" placeholder="Password" onChange={e => this.setState({password:e.target.value})}  ></input></div>
+{this.state.showpass ? 
+          <input type="password"  className="form-control" placeholder="Password" onChange={e => this.setState({password:e.target.value})}  ></input>
+          :null}</div>
           <div className="form-group">
-
-          <button className="btn btn-success btn-block but" onClick={()=> this.setState({login:true})} >Submit</button></div>
+          {this.state.showpass ?  <button className="btn btn-success btn-block but" onClick={()=> this.setState({login:true})} >Submit</button>
+          :null}</div>
           <div className="clearfix">
                             </div>
                         </form>

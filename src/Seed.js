@@ -226,6 +226,7 @@ export default class Distributor extends React.Component {
 
         
         {/* //sale and lease button */}
+        {this.state.isDetailsFilled ?
         <div className="login-form">
           <form  autoComplete="off">
           <div className="form-group">
@@ -245,10 +246,10 @@ export default class Distributor extends React.Component {
                 </button>
               </div>
               </form>
-              </div>
+              </div> : null}
 
        { this.state.isSeed ? 
-      //lease form
+      
          <div className="login-form">
         <form method="post" autoComplete="off">
           <h2 className="text-center">Seed Details</h2>
@@ -384,83 +385,134 @@ export default class Distributor extends React.Component {
        }
        </div>
 
-       {/* Seed Records   */}
         
        <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
-            <h2 className="text-center">Seed Records</h2>
+                   {/* Seed Records   */}
+                   <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Seed Records</button>
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Seed Records</h4>
+        </div>
+        <div class="modal-body">
+          {
             <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Seed ID</th>
-                  <th>Seed Name</th>
-                  <th>Cost</th>
-                  <th>Quantity</th>
-              </tr>
-              </thead>
-              <tbody>
-                {this.state.seeds.map((seed)=>{
-                 return(seed.saddr === this.state.account   && seed.isBought===false ?
-                   <tr>
-                     <td>{ seed.seedID}</td>
-                     <td>{ seed.seedName}</td>
-                     <td>{ seed.seedcost}</td>
-                     <td>{ seed.seedQuantity}</td>
-                   </tr>: null 
-                 )
-                })}
-              </tbody>
-            </table>
-
+            <thead>
+            <tr>
+                <th>Seed ID</th>
+                <th>Seed Name</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.seeds.map((seed)=>{
+               return(seed.saddr === this.state.account   && seed.isBought===false ?
+                 <tr>
+                   <td>{ seed.seedID}</td>
+                   <td>{ seed.seedName}</td>
+                   <td>{ seed.seedcost}</td>
+                   <td>{ seed.seedQuantity}</td>
+                 </tr>: null 
+               )
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+           
             {/* //Fertilizer Records */}
-
-            <h2 className="text-center">Fertilizer Records</h2>
+            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Fertilizer Records</button>
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Fertilizer Records</h4>
+        </div>
+        <div class="modal-body">
+          {
             <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Fertilizer ID</th>
-                  <th>Fertilizer Name</th>
-                  <th>Cost</th>
-                  <th>Quantity</th>
+            <thead>
+            <tr>
+                <th>Fertilizer ID</th>
+                <th>Fertilizer Name</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.fertilizers.map((fertilizer)=>{
+               return(fertilizer.saddr === this.state.account && fertilizer.isBought===false ?
+                 <tr>
+                   <td>{ fertilizer.fertilizerID}</td>
+                   <td>{ fertilizer.fertilizerName}</td>
+                   <td>{ fertilizer.fertilizerCost}</td>
+                   <td>{ fertilizer.fertilizerQuantity}</td>
+                 </tr>: null 
+               )
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+  {/* Seed/Fertilizer Dealer Record */}
+  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3"> Seed/Fertilizer Dealer Record</button>
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"> Seed/Fertilizer Dealer Record</h4>
+        </div>
+        <div class="modal-body">
+          {
+            <table class="table table-bordered table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Dealer ID</th>
+                <th>Dealer Name</th>
+                <th>Dealer Contact</th>
+                <th>Dealer Address</th>
               </tr>
-              </thead>
-              <tbody>
-                {this.state.fertilizers.map((fertilizer)=>{
-                 return(fertilizer.saddr === this.state.account && fertilizer.isBought===false ?
-                   <tr>
-                     <td>{ fertilizer.fertilizerID}</td>
-                     <td>{ fertilizer.fertilizerName}</td>
-                     <td>{ fertilizer.fertilizerCost}</td>
-                     <td>{ fertilizer.fertilizerQuantity}</td>
-                   </tr>: null 
-                 )
-                })}
-              </tbody>
-            </table>
-        
-            <h2 className="text-center">Seed/Fertilizer Dealer Record</h2>
-            <table class="table table-bordered table-dark table-striped">
-              <thead>
-              <tr>
-                  <th>Dealer ID</th>
-                  <th>Dealer Name</th>
-                  <th>Dealer Contact</th>
-                  <th>Dealer Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.dealerArrs.map((record)=>{
-                 return(
-                   <tr>
-                     <td>{record.dealerID}</td>
-                     <td>{record.dealerName}</td>
-                     <td>{record.dealerContact}</td>
-                     <td>{record.dealerAddress}</td>
-                   </tr>
-                 ) 
-                })}
-              </tbody>
-            </table>
+            </thead>
+            <tbody>
+              {this.state.dealerArrs.map((record)=>{
+               return(
+                 <tr>
+                   <td>{record.dealerID}</td>
+                   <td>{record.dealerName}</td>
+                   <td>{record.dealerContact}</td>
+                   <td>{record.dealerAddress}</td>
+                 </tr>
+               ) 
+              })}
+            </tbody>
+          </table>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+            
           </div>
         </div>
       </div>
