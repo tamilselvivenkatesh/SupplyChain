@@ -34,11 +34,24 @@ export default class Distributor extends React.Component {
       this.supply = new web3.eth.Contract(SupplyChain.abi, networkData.address)
       const cropCount = await this.supply.methods.cropCount().call()
       const distCropCount = await this.supply.methods.distCropCount().call()
+      const farmerCount = await this.supply.methods.farmerCount().call()
 
       let cropArr = [];
       let crop = [];
       let distArr =[];
       let dist=[];
+      let farmerAdd=[];
+      let farmerArr=[];
+      for(let i=0;i<farmerCount;i++)
+      {
+        farmerAdd.push(await this.supply.methods.farmerAdd(i).call())
+      }
+      this.setState({farmerAdds:farmerAdd})
+      for(let i=0;i<farmerCount;i++)
+      {
+        farmerArr.push(await this.supply.methods.mfarmer(farmerAdd[i]).call())  
+      }
+      this.setState({farmers:farmerArr})
       for(let i=0;i<distCropCount;i++)
       {
         distArr.push(await this.supply.methods.distArr(i).call())
@@ -57,6 +70,7 @@ export default class Distributor extends React.Component {
         crop.push(await this.supply.methods.mcrop(cropArr[i]).call())  
       }
       this.setState({crops:crop})
+      
       let distributorArr = [];
       distributorArr.push(await this.supply.methods.mdist(this.state.account).call())   
       this.setState({distributorArrs:distributorArr})
@@ -78,6 +92,8 @@ export default class Distributor extends React.Component {
       cropPrice:"",
       crops: [],
       dists: [],
+      farmerAdds: [],
+      farmers: [],
       distributorArrs: [],
       daddr:"",
       isDetailsFilled:false,
@@ -107,7 +123,7 @@ export default class Distributor extends React.Component {
         })
        }
 
-  render() {console.log(this.state.crops)
+  render() {
     return (
       <div className="container container-fluid login-conatiner">
         <div>
@@ -199,6 +215,7 @@ export default class Distributor extends React.Component {
                  <th>Crop Name</th>
                  <th>Quantity</th>
                  <th>Crop Price</th>
+                 <th>Crop Details</th>
                  <th>Purchase Crop</th>
              </tr>
              </thead>
@@ -210,6 +227,9 @@ export default class Distributor extends React.Component {
                     <td>{crop.cropName}</td>
                     <td>{crop.quantity}</td>
                     <td>{crop.cropPrice}</td>
+                    <td>{this.state.farmers.map((farmer)=>(
+                    farmer.faddr === crop.faddr?<p>Farmer Name: {farmer.farmerName}<br/>Farmer Address: {farmer.farmerAddress}<br/> Farmer Contact: {farmer.farmerContact}</p>:null  
+                    ))}</td>
                     <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
                   </tr>
                 )
