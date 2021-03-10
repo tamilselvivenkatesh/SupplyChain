@@ -34,11 +34,55 @@ export default class Distributor extends React.Component {
       this.supply = new web3.eth.Contract(SupplyChain.abi, networkData.address)
       const cropCount = await this.supply.methods.cropCount().call()
       const consumerCropCount = await this.supply.methods.consumerCropCount().call()
+      const farmerCount = await this.supply.methods.farmerCount().call()
+      const distCount = await this.supply.methods.distCount().call()
+      const retailCount = await this.supply.methods.retailCount().call()
 
       let cropArr = [];
       let crop = [];
       let consArr =[];
       let cons=[];
+      let farmerAdd=[];
+      let farmerArr=[];
+      let distAdd=[];
+      let distArr=[];
+      let retailArr=[];
+      let retailAdd=[];
+
+      //farmer
+      for(let i=0;i<farmerCount;i++)
+      {
+        farmerAdd.push(await this.supply.methods.farmerAdd(i).call())
+      }
+      this.setState({farmerAdds:farmerAdd})
+      for(let i=0;i<farmerCount;i++)
+      {
+        farmerArr.push(await this.supply.methods.mfarmer(farmerAdd[i]).call())  
+      }
+      this.setState({farmers:farmerArr})
+      
+      //distributor
+      for(let i=0;i<distCount;i++)
+      {
+        distAdd.push(await this.supply.methods.distAdd(i).call())
+      }
+      this.setState({distAdds:distAdd})
+      for(let i=0;i<distCount;i++)
+      {
+        distArr.push(await this.supply.methods.mdist(distAdd[i]).call())  
+      }
+      this.setState({distributors:distArr})
+      //retail
+      for(let i=0;i<retailCount;i++)
+      {
+        retailAdd.push(await this.supply.methods.retailAdd(i).call())
+      }
+      this.setState({retailAdds:retailAdd})
+      for(let i=0;i<retailCount;i++)
+      {
+        retailArr.push(await this.supply.methods.mretail(retailAdd[i]).call())  
+      }
+      this.setState({retailers:retailArr})
       for(let i=0;i<consumerCropCount;i++)
       {
         consArr.push(await this.supply.methods.consArr(i).call())
@@ -84,9 +128,16 @@ export default class Distributor extends React.Component {
       cartArr: [],
       consArrs: [],
       consumerArrs: [],
+      distAdds: [],
+      farmers:[],
+      farmerAdds: [],
+      distributors:[],
+      retailers:[],
+      retailAdds: [],
       caddr:"",
       isDetailsFilled:false,
       isBought:false,
+      isBoughtByRetailer: false,
       isBoughtByConsumer:false,
     };
   }
@@ -279,17 +330,41 @@ export default class Distributor extends React.Component {
                  <th>Crop Name</th>
                  <th>Quantity</th>
                  <th>Crop Price</th>
+                 <th>Crop Details</th>
                  <th>Purchase Crop</th>
              </tr>
              </thead>
              <tbody>
                {this.state.crops.map((crop)=>{
-                return(crop.isBought && !crop.isBoughtByConsumer ?
+              
+                return(crop.isBought && crop.isBoughtByRetailer && !crop.isBoughtByConsumer ?
                   <tr>
                     <td>{crop.cropID}</td>
                     <td>{crop.cropName}</td>
                     <td>{crop.quantity}</td>
                     <td>{crop.cropPrice}</td>
+                    <td>{this.state.farmers.map((farmer)=>(
+                    farmer.faddr === crop.faddr?<p>
+                    Farmer Name: {farmer.farmerName}<br/>
+                    Farmer Address: {farmer.farmerAddress}<br/> 
+                    Farmer Contact: {farmer.farmerContact}</p>:null
+                    ))}
+                    { this.state.distributors.map((dist)=>(
+                      dist.daddr === crop.daddr?<p>
+                      Distributor Name:{dist.distName}<br/>
+                      Distributor Address: {dist.distAddress}<br/>
+                      Distributor Contact: {dist.distContact}</p>:null
+                    ))
+                    }
+                    { this.state.retailers.map((retail)=>(
+                      retail.raddr === crop.raddr?<p>
+                      Retailer Name:{retail.retailName}<br/>
+                      Retailer Address: {retail.retailAddress}<br/>
+                      Retailer Contact: {retail.retailContact}</p>:null
+                    ))
+                    }
+                    
+                    </td>
                     <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
                   </tr> : null
                 )
