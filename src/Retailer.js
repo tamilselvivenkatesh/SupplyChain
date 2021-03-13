@@ -1,6 +1,7 @@
 import React from "react";
 import SupplyChain from "./contracts/SupplyChain.json";
 import Web3 from 'web3'
+import "./menu.css"
 
 
 export default class Distributor extends React.Component {
@@ -36,6 +37,8 @@ export default class Distributor extends React.Component {
       const retailCropCount = await this.supply.methods.retailCropCount().call()
       const farmerCount = await this.supply.methods.farmerCount().call()
       const distCount = await this.supply.methods.distCount().call()
+      const consumerCount = await this.supply.methods.consumerCount().call()
+
 
       let cropArr = [];
       let crop = [];
@@ -45,6 +48,9 @@ export default class Distributor extends React.Component {
       let farmerArr=[];
       let distAdd=[];
       let distArr=[];
+      let consArr =[];
+      let consAdd=[];
+      let conscrop=[];
       //farmer
       for(let i=0;i<farmerCount;i++)
       {
@@ -77,6 +83,7 @@ export default class Distributor extends React.Component {
         retail.push(await this.supply.methods.mcrop(retailArr[i]).call())  
       }
       this.setState({retails:retail})
+      //mcrop
       for(let i=0;i<cropCount;i++)
       {
         cropArr.push(await this.supply.methods.cropArr(i).call())
@@ -86,6 +93,26 @@ export default class Distributor extends React.Component {
         crop.push(await this.supply.methods.mcrop(cropArr[i]).call())  
       }
       this.setState({crops:crop})
+      //conscrop
+      
+      for(let i=0;i<cropArr.length;i++)
+      {
+        conscrop.push(await this.supply.methods.conscrop(cropArr[i]).call())  
+      }
+      this.setState({conscrops:conscrop})
+
+      //consumer
+      for(let i=0;i<consumerCount;i++)
+      {
+        consAdd.push(await this.supply.methods.consAdd(i).call())
+      }
+      this.setState({consAdds:consAdd})
+      for(let i=0;i<consumerCount;i++)
+      {
+        consArr.push(await this.supply.methods.mconsumer(consAdd[i]).call())  
+      }
+      this.setState({consumers:consArr})
+
       let retailerArr = [];
       retailerArr.push(await this.supply.methods.mretail(this.state.account).call())   
       this.setState({retailerArrs:retailerArr})
@@ -106,11 +133,17 @@ export default class Distributor extends React.Component {
       quantity:"",
       cropPrice:"",
       crops: [],
+      conss: [],
+      consArrs: [],
+      consumerArrs: [],
       retails: [],
       retailerArrs: [],
       distAdds: [],
+      consumers: [],
+      consAdds: [],
       farmers:[],
       distributors:[],
+      conscrops:[],
       raddr:"",
       isDetailsFilled:false,
       isBought:false,
@@ -215,7 +248,50 @@ export default class Distributor extends React.Component {
           <div className="c-list">
             {/* Crop Records */}
             {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Crop Record</button> : null }
+            <div class="menucontainer">
+            <div class="radio-tile-group">
+              <div class="input-container">
+              <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Crop Record</button>
+                {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+                <div class="radio-tile">
+                  <label for="walk" class="radio-tile-label">Crop Records</label>
+                </div>
+              </div>
+          
+              <div class="input-container">
+              <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Purchased records </button>
+                <div class="radio-tile">
+                  <div class="icon bike-icon">
+                  </div>
+                  <label for="bike" class="radio-tile-label">Purchased Records</label>
+                </div>
+              </div>
+          
+              <div class="input-container">
+              <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Retailer Record</button>
+                <div class="radio-tile">
+                  <div class="icon car-icon">
+                    
+                  </div>
+                  <label for="drive" class="radio-tile-label">Retailer Record</label>
+                </div>
+              </div>
+
+              <div class="input-container">
+              <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal4">Who Purchased?</button>
+                <div class="radio-tile">
+                  <div class="icon car-icon">
+                    
+                  </div>
+                  <label for="drive" class="radio-tile-label">Who Purchased?</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          : null }
+
+          {/* Crop Records */}
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -275,8 +351,6 @@ export default class Distributor extends React.Component {
   </div>
            
   {/* Purchased Crops */}
-  {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchased Crops</button> : null }
   <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -319,8 +393,6 @@ export default class Distributor extends React.Component {
   </div>
             
   {/* Retailer Record */}
-  {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Retailer Record</button> : null }
   <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -354,6 +426,59 @@ export default class Distributor extends React.Component {
           </table>
           }
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>  
+
+  {/* Who Purchased */}
+  <div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"> Who Purchased</h4>
+        </div>
+        <div class="modal-body">
+        {
+             <table class="table table-bordered table-dark table-striped">
+             <thead>
+             <tr>
+                 <th>Crop ID</th>
+                 <th>Crop Name</th>
+                 <th>Quantity</th>
+                 <th>Crop Price</th>
+                 <th>Who Purchased?</th>
+             </tr>
+             </thead>
+             <tbody>
+               {this.state.conscrops.map((crop)=>{
+              
+                return(crop.raddr === this.state.account && crop.isBoughtByConsumer ?
+                  <tr>
+                    <td>{crop.cropID}</td>
+                    <td>{crop.cropName}</td>
+                    <td>{crop.quantity}</td>
+                    <td>{crop.cropPrice}</td>
+                    <td>
+                    { this.state.consumers.map((record)=>(
+                      record.caddr === crop.caddr?<p>
+                      Consumer Name:{record.consumerName}<br/>
+                      Consumer Address: {record.consumerAddress}<br/>
+                      Consumer Contact: {record.consumerContact}</p>:null
+                    ))
+                    }
+               </td>
+                </tr> : null
+                )
+               })}
+             </tbody>
+           </table>
+          }
+       </div>
+           
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
          </div>

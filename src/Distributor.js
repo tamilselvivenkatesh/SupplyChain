@@ -1,6 +1,7 @@
 import React from "react";
 import SupplyChain from "./contracts/SupplyChain.json";
 import Web3 from 'web3'
+import "./menu.css"
 
 
 export default class Distributor extends React.Component {
@@ -35,6 +36,7 @@ export default class Distributor extends React.Component {
       const cropCount = await this.supply.methods.cropCount().call()
       const distCropCount = await this.supply.methods.distCropCount().call()
       const farmerCount = await this.supply.methods.farmerCount().call()
+      const retailCount = await this.supply.methods.retailCount().call()
 
       let cropArr = [];
       let crop = [];
@@ -42,6 +44,10 @@ export default class Distributor extends React.Component {
       let dist=[];
       let farmerAdd=[];
       let farmerArr=[];
+      let retailArr=[];
+      let retailAdd=[];
+
+      //farmer
       for(let i=0;i<farmerCount;i++)
       {
         farmerAdd.push(await this.supply.methods.farmerAdd(i).call())
@@ -52,6 +58,8 @@ export default class Distributor extends React.Component {
         farmerArr.push(await this.supply.methods.mfarmer(farmerAdd[i]).call())  
       }
       this.setState({farmers:farmerArr})
+
+      //distcrop
       for(let i=0;i<distCropCount;i++)
       {
         distArr.push(await this.supply.methods.distArr(i).call())
@@ -70,6 +78,18 @@ export default class Distributor extends React.Component {
         crop.push(await this.supply.methods.mcrop(cropArr[i]).call())  
       }
       this.setState({crops:crop})
+
+      //retail
+      for(let i=0;i<retailCount;i++)
+      {
+        retailAdd.push(await this.supply.methods.retailAdd(i).call())
+      }
+      this.setState({retailAdds:retailAdd})
+      for(let i=0;i<retailCount;i++)
+      {
+        retailArr.push(await this.supply.methods.mretail(retailAdd[i]).call())  
+      }
+      this.setState({retailers:retailArr})
       
       let distributorArr = [];
       distributorArr.push(await this.supply.methods.mdist(this.state.account).call())   
@@ -95,6 +115,8 @@ export default class Distributor extends React.Component {
       farmerAdds: [],
       farmers: [],
       distributorArrs: [],
+      retailers:[],
+      retailAdds: [],
       daddr:"",
       isDetailsFilled:false,
       isBought:false,
@@ -198,7 +220,47 @@ export default class Distributor extends React.Component {
          
           {/* Crop Records */}
           {this.state.isDetailsFilled ?
-          <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Crop Records</button> : null }
+          <div class="menucontainer">
+          <div class="radio-tile-group">
+            <div class="input-container">
+            <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Crop Record</button>
+              {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+              <div class="radio-tile">
+                <label for="walk" class="radio-tile-label">Crop Records</label>
+              </div>
+            </div>
+        
+            <div class="input-container">
+            <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Purchased records </button>
+              <div class="radio-tile">
+                <div class="icon bike-icon">
+                </div>
+                <label for="bike" class="radio-tile-label">Purchased Records</label>
+              </div>
+            </div>
+        
+            <div class="input-container">
+            <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Distributor Record</button>
+              <div class="radio-tile">
+                <div class="icon car-icon">
+                  
+                </div>
+                <label for="drive" class="radio-tile-label">Distributor Record</label>
+              </div>
+            </div>
+
+            <div class="input-container">
+            <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal4">Who Purchased?</button>
+              <div class="radio-tile">
+                <div class="icon car-icon">
+                  
+                </div>
+                <label for="drive" class="radio-tile-label">Who Purchased?</label>
+              </div>
+            </div>
+          </div>
+        </div>: null }
+        
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -244,10 +306,55 @@ export default class Distributor extends React.Component {
       </div>
     </div>
   </div> 
-  
+
+  <div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Who Purchased?</h4>
+        </div>
+        <div class="modal-body">
+          {
+             <table class="table table-bordered table-dark table-striped">
+             <thead>
+             <tr>
+                 <th>Crop ID</th>
+                 <th>Crop Name</th>
+                 <th>Quantity</th>
+                 <th>Crop Price</th>
+                 <th>Who Purchased?</th>
+             </tr>
+             </thead>
+             <tbody>
+               {this.state.crops.map((crop)=>{
+                return(crop.daddr === this.state.account && crop.isBoughtByRetailer ?
+                  <tr>
+                    <td>{crop.cropID}</td>
+                    <td>{crop.cropName}</td>
+                    <td>{crop.quantity}</td>
+                    <td>{crop.cropPrice}</td>
+                    <td>{ this.state.retailers.map((retail)=>(
+                      retail.raddr === crop.raddr?<p>
+                      Retailer Name:{retail.retailName}<br/>
+                      Retailer Address: {retail.retailAddress}<br/>
+                      Retailer Contact: {retail.retailContact}</p>:null
+                    ))
+                    }</td>
+                  </tr> : null
+                )
+               })}
+             </tbody>
+           </table>
+          }
+        </div> 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>   
   {/* Purchased Crops */}
-  {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchased Crops</button> : null }
   <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -289,8 +396,6 @@ export default class Distributor extends React.Component {
   </div>
             
   {/* Distributor Record */}
-  {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Distributor Record</button> : null }
   <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

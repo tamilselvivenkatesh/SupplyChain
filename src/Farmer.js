@@ -2,6 +2,7 @@ import React from "react";
 // import ReactDOM from "react-dom";
 import SupplyChain from "./contracts/SupplyChain.json";
 import Web3 from 'web3'
+import "./menu.css"
 
 
 export default class Farmer extends React.Component {
@@ -38,6 +39,8 @@ export default class Farmer extends React.Component {
       const saleCount = await this.supply.methods.saleCount().call()
       const seedCount = await this.supply.methods.seedCount().call()
       const fertilizerCount = await this.supply.methods.fertilizerCount().call()
+      const distCount = await this.supply.methods.distCount().call()
+
 
       let cropArr = [];
       let crop = [];
@@ -49,6 +52,8 @@ export default class Farmer extends React.Component {
       let seed = [];
       let fertilizerArr =[];
       let fertilizer=[];
+      let distAdd=[];
+      let distArr=[];
       
       //number of lands for lease
       for(let i=0;i<leaseCount;i++)
@@ -82,6 +87,18 @@ export default class Farmer extends React.Component {
         seed.push(await this.supply.methods.mseed(seedArr[i]).call())  
       }
       this.setState({seeds:seed})
+
+      //distributor
+      for(let i=0;i<distCount;i++)
+      {
+        distAdd.push(await this.supply.methods.distAdd(i).call())
+      }
+      this.setState({distAdds:distAdd})
+      for(let i=0;i<distCount;i++)
+      {
+        distArr.push(await this.supply.methods.mdist(distAdd[i]).call())  
+      }
+      this.setState({distributors:distArr})
 
       //number of fertilizer
       for(let i=0;i<fertilizerCount;i++)
@@ -135,6 +152,7 @@ export default class Farmer extends React.Component {
       fertilizerID:"",
       fertilizerName:"",
       fertilizerQuantity:"",
+      distributors:[],
       fertilizerCost:"",
       seeds: [],
       fertilizers: [],
@@ -360,11 +378,124 @@ export default class Farmer extends React.Component {
           </div>
        : null}</div>
         
-  <div className="col-md-2 col-md-offset-6">
+  <div className="col-md-7 col-md-offset-4">
           <div className="c-list">
+          {this.state.isDetailsFilled ?
+
+<div class="menucontainer">
+  <div class="radio-tile-group">
+    <div class="input-container">
+    <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Seed Record</button>
+      {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+      <div class="radio-tile">
+        <label for="walk" class="radio-tile-label">Seed Records</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Purchased Seed records </button>
+      <div class="radio-tile">
+        <div class="icon bike-icon">
+        </div>
+        <label for="bike" class="radio-tile-label">Purchased Seed Records</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Fertilizer Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Fertilizer Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal4">Purchased Fertilizer Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Purchased Fertilizer Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal5">Lease Land Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Lease Land Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal6">Purchased Lease Land Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Purchased Lease Land Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal7">Sale Land Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Sale Land Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal8">Purchased Sale Land Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Purchased Sale Land Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal9">Crop Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Crop Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal10">Farmer Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Farmer Record</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal11">Who purchased?</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Who purchased?</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+: null }
 
 {/* seed records */}
- <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Seed Records</button>
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -410,7 +541,6 @@ export default class Farmer extends React.Component {
 
 {/* purchased seed table */}
             
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchsed Seed Records</button>
   <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -453,7 +583,6 @@ export default class Farmer extends React.Component {
   </div>
            
             {/* fertilizer records */}
-<button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Fertilizer Records</button>
   <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -499,7 +628,6 @@ export default class Farmer extends React.Component {
            
   
             {/* Purchased fertilizers */}
-<button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal4">Purchased Fertilizer Records</button>
   <div class="modal fade" id="myModal4" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -543,10 +671,7 @@ export default class Farmer extends React.Component {
     </div>
   </div>
 
-           
-
             {/* Lease land records */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal5">Lease land records</button>
   <div class="modal fade" id="myModal5" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -596,11 +721,7 @@ export default class Farmer extends React.Component {
     </div>
   </div>
 
-
-         
-
-            {/* purchased lease land table */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal6">Purchase Lease land records</button>
+{/* purchased lease land table */}
   <div class="modal fade" id="myModal6" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -647,7 +768,6 @@ export default class Farmer extends React.Component {
     </div>
   </div>
              {/* Sale Land Records */}
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal7">Sale land records</button>
   <div class="modal fade" id="myModal7" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -695,7 +815,6 @@ export default class Farmer extends React.Component {
             
 
             {/* purchased sale land table */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal8">Purchased sale land table records</button>
   <div class="modal fade" id="myModal8" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -740,7 +859,6 @@ export default class Farmer extends React.Component {
   </div>
             {/* Crop Records */}
 
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal9">Crop Records</button>
   <div class="modal fade" id="myModal9" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -781,7 +899,6 @@ export default class Farmer extends React.Component {
     </div>
   </div>
             {/* Farmer Record */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal10"> Farmer Records</button>
   <div class="modal fade" id="myModal10" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -822,6 +939,56 @@ export default class Farmer extends React.Component {
       </div>
     </div>
   </div>
+
+  {/* Who Purchased? */}
+  <div class="modal fade" id="myModal11" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">  Who Purchased?</h4>
+        </div>
+        <div class="modal-body">
+          {
+            <table class="table table-bordered table-dark table-striped">
+            <thead>
+            <tr>
+                <th>Crop ID</th>
+                <th>Crop Name</th>
+                <th>Quantity</th>
+                <th>Crop Price</th>
+                <th>Who Purchased?</th>
+            </tr>
+            </thead>
+            <tbody>
+              {this.state.crops.map((crop)=>{
+               return(crop.faddr === this.state.account && crop.isBought ?
+                 <tr>
+                   <td>{crop.cropID}</td>
+                   <td>{crop.cropName}</td>
+                   <td>{crop.quantity}</td>
+                   <td>{crop.cropPrice}</td>
+                   <td>{ this.state.distributors.map((dist)=>(
+                      dist.daddr === crop.daddr?<p>
+                      Distributor Name:{dist.distName}<br/>
+                      Distributor Address: {dist.distAddress}<br/>
+                      Distributor Contact: {dist.distContact}</p>:null
+                    ))
+                    }</td>
+                 </tr>: null 
+               )
+              })}
+            </tbody>
+          </table>
+            }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+    </div>
+  </div>
+
             
           
           </div>

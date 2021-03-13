@@ -1,6 +1,7 @@
 import React from "react";
 import SupplyChain from "./contracts/SupplyChain.json";
 import Web3 from 'web3'
+import "./menu.css"
 
 
 export default class Distributor extends React.Component {
@@ -42,6 +43,7 @@ export default class Distributor extends React.Component {
       let crop = [];
       let consArr =[];
       let cons=[];
+      let conscrop = [];
       let farmerAdd=[];
       let farmerArr=[];
       let distAdd=[];
@@ -101,6 +103,14 @@ export default class Distributor extends React.Component {
         crop.push(await this.supply.methods.mcrop(cropArr[i]).call())  
       }
       this.setState({crops:crop})
+
+      //consumer
+      for(let i=0;i<cropArr.length;i++)
+      {
+        conscrop.push(await this.supply.methods.conscrop(cropArr[i]).call())  
+      }
+      this.setState({conscrops:conscrop})
+
       let consumerArr = [];
       consumerArr.push(await this.supply.methods.mconsumer(this.state.account).call())   
       this.setState({consumerArrs:consumerArr})
@@ -124,6 +134,7 @@ export default class Distributor extends React.Component {
       quantity:"",
       cropPrice:"",
       crops: [],
+      conscrops:[],
       conss: [],
       cartArr: [],
       consArrs: [],
@@ -139,6 +150,7 @@ export default class Distributor extends React.Component {
       isBought:false,
       isBoughtByRetailer: false,
       isBoughtByConsumer:false,
+      needQuantity:{}
     };
   }
 
@@ -160,7 +172,7 @@ export default class Distributor extends React.Component {
         this.setState({account}) 
         let cart= this.state.cartArr;
         for(let i=0;i<cart.length;i++){
-        this.supply.methods.consumerAddCrop(cart[i]).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+        this.supply.methods.consumerAddCrop(cart[i],this.state.needQuantity[cart[i]]).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
        } })
     }
 
@@ -195,7 +207,6 @@ export default class Distributor extends React.Component {
 <div class="container">
 {/* Cart modal starts */}
 <br/>
-
 <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal">Cart</button> 
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -223,7 +234,7 @@ export default class Distributor extends React.Component {
                  <tr>
                    <td>{crop.cropID}</td>
                    <td>{crop.cropName}</td>
-                   <td>{crop.quantity}</td>
+                   <td>{this.state.needQuantity[crop.cropID]}</td>
                    <td>{crop.cropPrice}</td>
                    <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.removePurchase} >Remove</button></td>
                  </tr>:null
@@ -243,6 +254,11 @@ export default class Distributor extends React.Component {
   </div>
 </div>
 {/* cart Modal ends */}
+
+{/* opens nav */}
+
+{/* ends nav */}
+ 
           {this.state.isDetailsFilled ? null:
         <div className="login-form">
             <form method="post" autoComplete="off">
@@ -313,7 +329,39 @@ export default class Distributor extends React.Component {
           <div className="c-list">
              {/* Crop records */}
              {this.state.isDetailsFilled ?
-             <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Crop Record</button> : null }
+
+<div class="menucontainer">
+  <div class="radio-tile-group">
+    <div class="input-container">
+    <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Crop Record</button>
+      {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+      <div class="radio-tile">
+        <label for="walk" class="radio-tile-label">Crop Records</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Purchased records </button>
+      <div class="radio-tile">
+        <div class="icon bike-icon">
+        </div>
+        <label for="bike" class="radio-tile-label">Purchased Records</label>
+      </div>
+    </div>
+
+    <div class="input-container">
+    <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Consumer Record</button>
+      <div class="radio-tile">
+        <div class="icon car-icon">
+          
+        </div>
+        <label for="drive" class="radio-tile-label">Consumer Record</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+: null }
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -331,13 +379,14 @@ export default class Distributor extends React.Component {
                  <th>Quantity</th>
                  <th>Crop Price</th>
                  <th>Crop Details</th>
+                 <th>Purchase quantity</th>
                  <th>Purchase Crop</th>
              </tr>
              </thead>
              <tbody>
                {this.state.crops.map((crop)=>{
               
-                return(crop.isBought && crop.isBoughtByRetailer && !crop.isBoughtByConsumer ?
+                return(crop.isBought && crop.quantity > 0 ?
                   <tr>
                     <td>{crop.cropID}</td>
                     <td>{crop.cropName}</td>
@@ -363,9 +412,15 @@ export default class Distributor extends React.Component {
                       Retailer Contact: {retail.retailContact}</p>:null
                     ))
                     }
-                    
                     </td>
-                    <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase}>Purchase</button></td>
+                    <td><input type = "number"
+                    onChange={event => {
+                      let dict = this.state.needQuantity;
+                      dict[crop.cropID] = event.target.value;
+                      this.setState({ needQuantity: dict})
+                    }
+                  }/></td>
+                    <td><button type="button" className="btn btn-primary btn-block" value= {crop.cropID} onClick={this.handlePurchase} disabled={this.state.needQuantity[crop.cropID]>crop.quantity?true:false}>Purchase</button></td>
                   </tr> : null
                 )
                })}
@@ -380,14 +435,12 @@ export default class Distributor extends React.Component {
     </div>
   </div>
          {/* Purchased records */}
-         {this.state.isDetailsFilled ?
-         <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Purchased records </button> : null }
-  <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Purchased records </h4>
+          <h4 class="modal-title">Purchased Records </h4>
         </div>
         <div class="modal-body">
           {
@@ -401,7 +454,7 @@ export default class Distributor extends React.Component {
             </tr>
             </thead>
             <tbody>
-              {this.state.crops.map((crop)=>{
+              {this.state.conscrops.map((crop)=>{
                return(crop.isBoughtByConsumer ? 
                  <tr>
                    <td>{crop.cropID}</td>
@@ -423,8 +476,6 @@ export default class Distributor extends React.Component {
   </div>
             
   {/* Consumer Record */}
-  {this.state.isDetailsFilled ?
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3">Consumer Record</button> : null }
   <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
