@@ -430,13 +430,46 @@ export default class Landlord extends React.Component {
         <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
           {/* Land Lease Records */}
-          <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Land Lease Records</button>
+          {this.state.isDetailsFilled ?
+                <div class="menucontainer">
+                <div class="radio-tile-group">
+                  <div class="input-container">
+                  <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Land Lease Records</button>
+                    {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+                    <div class="radio-tile">
+                      <label for="walk" class="radio-tile-label">Land Lease Records</label>
+                    </div>
+                  </div>
+              
+                  <div class="input-container">
+                  <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Land Sale Record </button>
+                    <div class="radio-tile">
+                      <div class="icon bike-icon">
+                      </div>
+                      <label for="bike" class="radio-tile-label"> Land Sale Record </label>
+                    </div>
+                  </div>
+              
+                  <div class="input-container">
+                  <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Landlord Record</button>
+                    <div class="radio-tile">
+                      <div class="icon car-icon">
+                        
+                      </div>
+                      <label for="drive" class="radio-tile-label">Landlord Record</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       : null } 
+
+{/* Land Sale Records */}
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Land Lease Records</h4>
+          <h4 class="modal-title">Land Sale Records</h4>
         </div>
         <div class="modal-body">
           {
@@ -478,8 +511,7 @@ export default class Landlord extends React.Component {
             
 
             {/* //land sale Records */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Land Sale Record</button>
-  <div class="modal fade" id="myModal1" role="dialog">
+  <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -524,8 +556,7 @@ export default class Landlord extends React.Component {
   </div>
             
   {/* Landlord Record */}
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Landlord Record</button>
-  <div class="modal fade" id="myModal2" role="dialog">
+  <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">

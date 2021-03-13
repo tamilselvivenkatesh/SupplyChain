@@ -218,7 +218,6 @@ export default class Distributor extends React.Component {
         <div className="col-md-12">
           <div className="c-list">
          
-          {/* Crop Records */}
           {this.state.isDetailsFilled ?
           <div class="menucontainer">
           <div class="radio-tile-group">
@@ -260,7 +259,8 @@ export default class Distributor extends React.Component {
             </div>
           </div>
         </div>: null }
-        
+                  {/* Crop Records */}
+
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

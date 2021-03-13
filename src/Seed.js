@@ -1,6 +1,7 @@
 import React from "react";
 import SupplyChain from "./contracts/SupplyChain.json";
 import Web3 from 'web3'
+import "./menu.css"
 
 
 export default class Distributor extends React.Component {
@@ -142,18 +143,6 @@ export default class Distributor extends React.Component {
         this.setState({ isFertilizer: !this.state.isFertilizer })
         this.setState({isSeed:false})
      }
- 
-
-
-    // handlePurchase(event) {
-    //    event.preventDefault();
-    //    let id=event.target.value;
-    //   // console.log(id);
-    //   window.web3.eth.getCoinbase((err, account) => {
-    //   this.setState({account}) 
-    //   this.supply.methods.distAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
-    //     })
-    //    }
 
   render() {
     return (
@@ -388,8 +377,41 @@ export default class Distributor extends React.Component {
         
        <div className="col-md-6 col-md-offset-2">
           <div className="c-list">
-                   {/* Seed Records   */}
-                   <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal1">Seed Records</button>
+              {this.state.isDetailsFilled ?
+                <div class="menucontainer">
+                <div class="radio-tile-group">
+                  <div class="input-container">
+                  <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Seed Record</button>
+                    {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
+                    <div class="radio-tile">
+                      <label for="walk" class="radio-tile-label">Seed Records</label>
+                    </div>
+                  </div>
+              
+                  <div class="input-container">
+                  <button id ="bike" type="button" class="radio-button" data-toggle="modal" data-target="#myModal2">Fertilizer records </button>
+                    <div class="radio-tile">
+                      <div class="icon bike-icon">
+                      </div>
+                      <label for="bike" class="radio-tile-label">Fertilizer Records</label>
+                    </div>
+                  </div>
+              
+                  <div class="input-container">
+                  <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Seed/Fertilizer Record</button>
+                    <div class="radio-tile">
+                      <div class="icon car-icon">
+                        
+                      </div>
+                      <label for="drive" class="radio-tile-label">Seed/Fertilizer Record</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       : null } 
+                
+    {/* Seed Records   */}
+
   <div class="modal fade" id="myModal1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -431,7 +453,6 @@ export default class Distributor extends React.Component {
   </div>
            
             {/* //Fertilizer Records */}
-            <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal2">Fertilizer Records</button>
   <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -472,7 +493,6 @@ export default class Distributor extends React.Component {
     </div>
   </div>
   {/* Seed/Fertilizer Dealer Record */}
-  <button type="button" class="btn btn-success pull-right btn-lg" data-toggle="modal" data-target="#myModal3"> Seed/Fertilizer Dealer Record</button>
   <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
