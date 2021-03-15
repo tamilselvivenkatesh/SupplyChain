@@ -687,7 +687,6 @@ export default class Farmer extends React.Component {
                   <th>Land ID</th>
                   <th>Address</th>
                   <th>Soil Type</th>
-                  <th>Crop Type</th>
                   <th>Area</th>
                   <th>Cost</th>
                   <th>Duration</th>
@@ -699,9 +698,8 @@ export default class Farmer extends React.Component {
                  return(land.isBought ? null :
                    <tr>
                      <td>{ land.landID}</td>
-                      <td>{ land.landAddress}</td>
+                     <td>{ land.landAddress}</td>
                      <td>{ land.soilType}</td>
-                     {/* <td>{ land.cropType}</td> */}
                      <td>{ land.area}</td>
                      <td>{ land.cost}</td>
                      <td>{ land.duration}</td>
@@ -783,7 +781,6 @@ export default class Farmer extends React.Component {
                 <th>Land ID</th>
                 <th>Address</th>
                 <th>Soil Type</th>
-                <th>Crop Type</th>
                 <th>Area</th>
                 <th>Cost</th>
                 <th>Purchase Land</th>
