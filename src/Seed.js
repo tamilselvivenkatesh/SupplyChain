@@ -382,7 +382,6 @@ export default class Distributor extends React.Component {
                 <div class="radio-tile-group">
                   <div class="input-container">
                   <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Seed Record</button>
-                    {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
                     <div class="radio-tile">
                       <label for="walk" class="radio-tile-label">Seed Records</label>
                     </div>

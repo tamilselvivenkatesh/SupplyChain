@@ -230,14 +230,12 @@ export default class Landlord extends React.Component {
 
         {/* //sale and lease button */}
         {this.state.isDetailsFilled ? 
- 
           <div className="login-form">
           <form  autoComplete="off">
           <div className="form-group">
                 <button
                   className="btn btn-primary btn-block"
                    onClick={this.handleLClick}
-                  //  onClick={() => this.setState({ isLease: !this.state.isLease })}
                 >
                   Lease
                 </button>
@@ -246,8 +244,6 @@ export default class Landlord extends React.Component {
                 <button
                   className="btn btn-primary btn-block"
                    onClick={this.handleSClick}
-                  // onClick={() => this.setState({ isSale: !this.state.isSale })}
-
                 >
                   Sale
                 </button>
