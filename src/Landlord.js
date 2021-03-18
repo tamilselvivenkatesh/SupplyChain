@@ -111,7 +111,7 @@ export default class Landlord extends React.Component {
         this.state.landlordID,
         this.state.landlordName,
         this.state.landlordContact,
-        this.state.landlordAddress).send({ from: account}).then(()=>{ this.setState({ message: "Landlord Details Entered" });  window.location.reload(false);});
+        this.state.landlordAddress).send({ from: account}).then(()=>{ this.setState({ message: "Landlord Details Entered" });  this.loadBlockchainData();});
       })
     }
 
@@ -127,7 +127,15 @@ export default class Landlord extends React.Component {
         this.state.soilType,
         this.state.area,
         this.state.cost,
-        this.state.duration).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Lease" });  window.location.reload(false);});
+        this.state.duration).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Lease" });  this.loadBlockchainData();
+      this.setState({
+        landId:"",
+        landAddress:"",
+        soilType:"",
+        duration:"",
+        cost:"",
+        area:"",
+      })});
       })
     }
 
@@ -142,7 +150,14 @@ export default class Landlord extends React.Component {
         this.state.landAddress,
         this.state.soilType,
         this.state.area,
-        this.state.cost).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Sale" });  window.location.reload(false);});
+        this.state.cost).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Sale" }); this.loadBlockchainData();
+      this.setState({
+        landId:"",
+        landAddress:"",
+        soilType:"",
+        cost:"",
+        area:"",
+      })});
       })
     }
 

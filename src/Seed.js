@@ -103,7 +103,7 @@ export default class Distributor extends React.Component {
         this.state.dealerID,
         this.state.dealerName,
         this.state.dealerContact,
-        this.state.dealerAddress).send({ from: account}).then(()=>{ this.setState({ message: "Dealer Details Entered" });  window.location.reload(false);});
+        this.state.dealerAddress).send({ from: account}).then(()=>{ this.setState({ message: "Dealer Details Entered" }); this.loadBlockchainData();});
       })
     }
 
@@ -115,7 +115,13 @@ export default class Distributor extends React.Component {
             this.state.seedID,
             this.state.seedName,
             this.state.seedcost,
-            this.state.seedQuantity).send({ from: account}).then(()=>{ this.setState({ message: "Seed Details Entered" });  window.location.reload(false);});
+            this.state.seedQuantity).send({ from: account}).then(()=>{ this.setState({ message: "Seed Details Entered" }); this.loadBlockchainData();
+          this.setState({
+            seedID:"",
+            seedName:"",
+            seedQuantity:"",
+            seedcost:"",
+          })});
         })
     }
 
@@ -127,7 +133,13 @@ export default class Distributor extends React.Component {
             this.state.fertilizerID,
             this.state.fertilizerName,
             this.state.fertilizerCost,
-            this.state.fertilizerQuantity).send({ from: account}).then(()=>{ this.setState({ message: "Fertilizer Details Entered" });  window.location.reload(false);});
+            this.state.fertilizerQuantity).send({ from: account}).then(()=>{ this.setState({ message: "Fertilizer Details Entered" }); this.loadBlockchainData();
+          this.setState({
+            fertilizerID:"",
+            fertilizerName:"",
+            fertilizerQuantity:"",
+            fertilizerCost:"",
+          })});
         })
     }
     
@@ -397,12 +409,12 @@ export default class Distributor extends React.Component {
                   </div>
               
                   <div class="input-container">
-                  <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Seed/Fertilizer Record</button>
+                  <button id ="drive" type="button" class="radio-button" data-toggle="modal" data-target="#myModal3">Dealer Record</button>
                     <div class="radio-tile">
                       <div class="icon car-icon">
                         
                       </div>
-                      <label for="drive" class="radio-tile-label">Seed/Fertilizer Record</label>
+                      <label for="drive" class="radio-tile-label">Dealer Record</label>
                     </div>
                   </div>
                 </div>

@@ -162,7 +162,7 @@ export default class Distributor extends React.Component {
         this.state.consumerID,
         this.state.consumerName,
         this.state.consumerContact,
-        this.state.consumerAddress).send({ from: account}).then(()=>{ this.setState({ message: "consumer Details Entered" });  window.location.reload(false);});
+        this.state.consumerAddress).send({ from: account}).then(()=>{ this.setState({ message: "consumer Details Entered" });  this.loadBlockchainData();});
       })
     }
 
@@ -172,7 +172,7 @@ export default class Distributor extends React.Component {
         this.setState({account}) 
         let cart= this.state.cartArr;
         for(let i=0;i<cart.length;i++){
-        this.supply.methods.consumerAddCrop(cart[i],this.state.needQuantity[cart[i]]).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+        this.supply.methods.consumerAddCrop(cart[i],this.state.needQuantity[cart[i]]).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" }); this.loadBlockchainData();});
        } })
     }
 

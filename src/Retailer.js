@@ -159,7 +159,7 @@ export default class Distributor extends React.Component {
         this.state.retailID,
         this.state.retailName,
         this.state.retailContact,
-        this.state.retailAddress).send({ from: account}).then(()=>{ this.setState({ message: "Retailer Details Entered" });  window.location.reload(false);});
+        this.state.retailAddress).send({ from: account}).then(()=>{ this.setState({ message: "Retailer Details Entered" }); this.loadBlockchainData();});
       })
     }
 
@@ -170,7 +170,7 @@ export default class Distributor extends React.Component {
       // console.log(id);
       window.web3.eth.getCoinbase((err, account) => {
       this.setState({account}) 
-      this.supply.methods.retailAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+      this.supply.methods.retailAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" }); this.loadBlockchainData();});
         })
        }
 

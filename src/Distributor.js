@@ -131,7 +131,7 @@ export default class Distributor extends React.Component {
         this.state.distID,
         this.state.distName,
         this.state.distContact, 
-        this.state.distAddress).send({ from: account}).then(()=>{ this.setState({ message: "Distributor Details Entered" });  window.location.reload(false);});
+        this.state.distAddress).send({ from: account}).then(()=>{ this.setState({ message: "Distributor Details Entered" }); this.loadBlockchainData();});
       })
     }
 
@@ -141,7 +141,7 @@ export default class Distributor extends React.Component {
        let id=event.target.value;
       window.web3.eth.getCoinbase((err, account) => {
       this.setState({account}) 
-      this.supply.methods.distAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+      this.supply.methods.distAddCrop(id).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" }); this.loadBlockchainData();});
         })
        }
 

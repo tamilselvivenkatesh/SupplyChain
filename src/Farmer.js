@@ -141,7 +141,7 @@ export default class Farmer extends React.Component {
       farmerName:"",
       farmerAddress:"",
       farmerContact:"",
-      cropId:"",
+      cropID:"",
       cropName:"",
       quantity:"",
       cropPrice:"",
@@ -181,7 +181,7 @@ export default class Farmer extends React.Component {
         this.state.farmerID,
         this.state.farmerName,
         this.state.farmerContact,
-        this.state.farmerAddress).send({ from: account}).then(()=>{ this.setState({ message: "Farmer Details Entered" });  window.location.reload(false);});
+        this.state.farmerAddress).send({ from: account}).then(()=>{ this.setState({ message: "Farmer Details Entered" }); this.loadBlockchainData();});
       })
     }
 
@@ -189,12 +189,18 @@ export default class Farmer extends React.Component {
   handleCropClick(event) {
     event.preventDefault();
     window.web3.eth.getCoinbase((err, account) => {
-    this.setState({account}) 
+    this.setState({account})
     this.supply.methods.addCrop(
         this.state.cropID,
         this.state.cropName,
         this.state.quantity,
-        this.state.cropPrice).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" });  window.location.reload(false);});
+        this.state.cropPrice).send({ from: account}).then(()=>{ this.setState({ message: "New Crop Added" }); this.loadBlockchainData();
+      this.setState({
+      cropID:"",
+      cropName:"",
+      quantity:"",
+      cropPrice:"",
+      })});
       })
     }
     
@@ -205,7 +211,7 @@ export default class Farmer extends React.Component {
      // console.log(id);
      window.web3.eth.getCoinbase((err, account) => {
      this.setState({account}) 
-     this.supply.methods.purchaseLandLease(id).send({ from: account}).then(()=>{ this.setState({ message: "Lease Land purchased Added" });  window.location.reload(false);});
+     this.supply.methods.purchaseLandLease(id).send({ from: account}).then(()=>{ this.setState({ message: "Lease Land purchased Added" }); this.loadBlockchainData();});
        })
       }
 
@@ -216,7 +222,7 @@ export default class Farmer extends React.Component {
      // console.log(id);
      window.web3.eth.getCoinbase((err, account) => {
      this.setState({account}) 
-     this.supply.methods.purchaseLandSale(id).send({ from: account}).then(()=>{ this.setState({ message: "Sale land purchased Added" });  window.location.reload(false);});
+     this.supply.methods.purchaseLandSale(id).send({ from: account}).then(()=>{ this.setState({ message: "Sale land purchased Added" }); this.loadBlockchainData();});
        })
       }
 
@@ -227,7 +233,7 @@ export default class Farmer extends React.Component {
      // console.log(id);
      window.web3.eth.getCoinbase((err, account) => {
      this.setState({account}) 
-     this.supply.methods.purchaseSeed(id).send({ from: account}).then(()=>{ this.setState({ message: "Seed purchased Added" });  window.location.reload(false);});
+     this.supply.methods.purchaseSeed(id).send({ from: account}).then(()=>{ this.setState({ message: "Seed purchased Added" }); this.loadBlockchainData();});
        })
       }
 
@@ -238,7 +244,7 @@ export default class Farmer extends React.Component {
      // console.log(id);
      window.web3.eth.getCoinbase((err, account) => {
      this.setState({account}) 
-     this.supply.methods.purchaseFertilizer(id).send({ from: account}).then(()=>{ this.setState({ message: "Fertilizer purchased Added" });  window.location.reload(false);});
+     this.supply.methods.purchaseFertilizer(id).send({ from: account}).then(()=>{ this.setState({ message: "Fertilizer purchased Added" });  this.loadBlockchainData();});
        })
       }
 
