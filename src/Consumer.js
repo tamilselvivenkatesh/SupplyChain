@@ -34,7 +34,7 @@ export default class Distributor extends React.Component {
     if(networkData) { 
       this.supply = new web3.eth.Contract(SupplyChain.abi, networkData.address)
       const cropCount = await this.supply.methods.cropCount().call()
-      const consumerCropCount = await this.supply.methods.consumerCropCount().call()
+     // const consumerCropCount = await this.supply.methods.consumerCropCount().call()
       const farmerCount = await this.supply.methods.farmerCount().call()
       const distCount = await this.supply.methods.distCount().call()
       const retailCount = await this.supply.methods.retailCount().call()
@@ -85,15 +85,16 @@ export default class Distributor extends React.Component {
         retailArr.push(await this.supply.methods.mretail(retailAdd[i]).call())  
       }
       this.setState({retailers:retailArr})
-      for(let i=0;i<consumerCropCount;i++)
-      {
-        consArr.push(await this.supply.methods.consArr(i).call())
-      }
-      for(let i=0;i<consArr.length;i++)
-      {
-        cons.push(await this.supply.methods.mcrop(consArr[i]).call())  
-      }
-      this.setState({conss:cons})
+      // //consumer
+      // for(let i=0;i<consumerCropCount;i++)
+      // {
+      //   consArr.push(await this.supply.methods.consArr(i).call())
+      // }
+      // for(let i=0;i<consArr.length;i++)
+      // {
+      //   cons.push(await this.supply.methods.mcrop(consArr[i]).call())  
+      // }
+      // this.setState({conss:cons})
       for(let i=0;i<cropCount;i++)
       {
         cropArr.push(await this.supply.methods.cropArr(i).call())
