@@ -568,7 +568,7 @@ export default class Farmer extends React.Component {
              </thead>
              <tbody>
                {this.state.seeds.map((seed)=>{
-                return(seed.isBought ?
+                return(seed.isBought  && seed.faddr === this.state.account?
                   <tr>
                     <td>{ seed.seedID}</td>
                     <td>{ seed.seedName}</td>
@@ -655,7 +655,7 @@ export default class Farmer extends React.Component {
             </thead>
             <tbody>
               {this.state.fertilizers.map((fertilizer)=>{
-               return(fertilizer.isBought ?
+               return(fertilizer.isBought && fertilizer.faddr === this.state.account?
                  <tr>
                    <td>{ fertilizer.fertilizerID}</td>
                    <td>{ fertilizer.fertilizerName}</td>
@@ -741,7 +741,6 @@ export default class Farmer extends React.Component {
                   <th>Land ID</th>
                   <th>Address</th>
                   <th>Soil Type</th>
-                  <th>Crop Type</th>
                   <th>Area</th>
                   <th>Cost</th>
                   <th>Duration</th>
@@ -750,7 +749,7 @@ export default class Farmer extends React.Component {
               </thead>
               <tbody>
                 {this.state.leases.map((land)=>{
-                 return(land.isBought ?
+                 return(land.isBought && land.faddr === this.state.account?
                    <tr>
                      <td>{ land.landID}</td>
                      <td>{ land.landAddress}</td>
@@ -833,14 +832,13 @@ export default class Farmer extends React.Component {
                 <th>Land ID</th>
                 <th>Address</th>
                 <th>Soil Type</th>
-                <th>Crop Type</th>
                 <th>Area</th>
                 <th>Cost</th>
             </tr>
             </thead>
             <tbody>
               {this.state.sales.map((land)=>{
-               return(land.isBought ?
+               return(land.isBought  && land.faddr === this.state.account?
                  <tr>
                    <td>{ land.landID}</td>
                    <td>{ land.landAddress}</td>

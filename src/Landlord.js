@@ -86,7 +86,7 @@ export default class Landlord extends React.Component {
       landlordName:"",
       landlordAddress:"",
       landlordContact:"",
-      landId:"",
+      landID:"",
       landAddress:"",
       soilType:"",
       duration:"",
@@ -129,7 +129,7 @@ export default class Landlord extends React.Component {
         this.state.cost,
         this.state.duration).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Lease" });  this.loadBlockchainData();
       this.setState({
-        landId:"",
+        landID:"",
         landAddress:"",
         soilType:"",
         duration:"",
@@ -152,7 +152,7 @@ export default class Landlord extends React.Component {
         this.state.area,
         this.state.cost).send({ from: account}).then(()=>{ this.setState({ message: "New Land Added for Sale" }); this.loadBlockchainData();
       this.setState({
-        landId:"",
+        landID:"",
         landAddress:"",
         soilType:"",
         cost:"",

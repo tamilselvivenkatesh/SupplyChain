@@ -371,7 +371,7 @@ export default class Distributor extends React.Component {
            </thead>
            <tbody>
              {this.state.crops.map((crop)=>{
-              return(crop.isBoughtByRetailer ? 
+              return(crop.isBoughtByRetailer && crop.raddr === this.state.account? 
                 <tr>
                   <td>{crop.cropID}</td>
                   <td>{crop.cropName}</td>

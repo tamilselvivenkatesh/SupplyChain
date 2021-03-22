@@ -167,7 +167,7 @@ export default class Distributor extends React.Component {
               <div className="form-group">
                 <input
                   type="text" 
-                  value={this.state.farmerName}
+                  value={this.state.distName}
                   onChange={event =>
                     this.setState({ distName: event.target.value })
                   }
@@ -223,7 +223,6 @@ export default class Distributor extends React.Component {
           <div class="radio-tile-group">
             <div class="input-container">
             <button type="button" id="walk" class="radio-button" data-toggle="modal" data-target="#myModal1">Crop Record</button>
-              {/* <input id="walk" class="radio-button" type="radio" name="radio" /> */}
               <div class="radio-tile">
                 <label for="walk" class="radio-tile-label">Crop Records</label>
               </div>
@@ -375,7 +374,7 @@ export default class Distributor extends React.Component {
              </thead>
              <tbody>
                {this.state.crops.map((crop)=>{
-                return(crop.isBought ? 
+                return(crop.isBought && crop.daddr === this.state.account? 
                   <tr>
                     <td>{crop.cropID}</td>
                     <td>{crop.cropName}</td>
